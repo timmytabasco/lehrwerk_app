@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lehrwerk | Startseite</title>
+    <link rel="icon" type="image/svg+xml" href="/img/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body class="bg-white text-gray-900 antialiased font-mono">
+    <!-- Backdrop Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-neutral-300 bg-opacity-40 opacity-0 pointer-events-none transition-all duration-300 z-40 backdrop-blur-sm"></div>
+    <!-- Navigation -->
+    <header class="bg-neutral-400 w-full sticky top-0 z-50 shadow-lg">
+      <nav>
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+          <!-- Logo -->
+          <a href="#" class="block group">
+            <span class="logo text-2xl font-bold text-yellow-50 transition-all duration-500 transform group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+              <img src="img/logo.png" alt="Logo der Lehrwerk GmbH" class="h-[6.5rem] transition-transform duration-500 group-hover:scale-125" />
+            </span>
+          </a>
+          <!-- Hamburger Button -->
+          <button id="hamburger" class="md:hidden text-neutral-50 w-10 h-10 flex flex-col justify-center items-center focus:outline-none focus:ring-2 focus:ring-neutal-500 focus:ring-opacity-50 rounded-lg transition-all duration-200 hover:bg-neutral-500 hover:scale-110 group">
+            <div class="space-y-1.5">
+              <div id="hamburger-line-1" class="w-6 h-0.5 bg-white transition-all duration-300 group-hover:bg-rose-900"></div>
+              <div id="hamburger-line-2" class="w-6 h-0.5 bg-white transition-all duration-300 group-hover:bg-rose-900"></div>
+              <div id="hamburger-line-3" class="w-6 h-0.5 bg-white transition-all duration-300 group-hover:bg-rose-900"></div>
+            </div>
+          </button>
+          <ul class="hidden md:flex items-center text-2xl font-bold text-red-900 space-x-4">
+            <li>
+              <a href="#" class="inline-block group">
+                <span class="inline-block relative pb-1">
+                  Start
+                  <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-neutral-100 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+              </a>
+            </li>
+            <li class="text-black select-none">|</li>
+            <li>
+              <a href="#courses" class="inline-block group text-red-900">
+                <span class="inline-block relative pb-1">
+                  Kursangebote
+                  <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-neutral-100 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+              </a>
+            </li>
+            <li class="text-black select-none">|</li>
+            <li>
+              <a href="#about" class="inline-block group text-red-900">
+                <span class="inline-block relative pb-1">
+                  Über Uns
+                  <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-neutral-100 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+              </a>
+            </li>
+            <li class="text-black select-none">|</li>
+            <li>
+              <a href="#contact" class="inline-block group text-red-900">
+                <span class="inline-block relative pb-1">
+                  Kontakt & Beratung
+                  <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-neutral-100 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+              </a>
+            </li>
+            <li class="text-black select-none">|</li>
+            <li>
+              <a href="#faq" class="inline-block group text-red-900">
+                <span class="inline-block  relative pb-1">
+                  Häufige Fragen
+                  <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-neutral-100 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-gradient-to-b from-neutral-50 via-neutral-50 to-neutral-50 shadow-2xl" style="max-height: 0px;">
+          <div class="backdrop-blur-sm bg-red-900">
+            <ul class="flex flex-col items-center space-y-6 py-8 px-4">
+              <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
+                <a href="#start" class="mobile-nav-link block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+                  <span class="flex items-center justify-center space-x-3">
+                    <span class="text-2xl group-hover:animate-bounce">👨‍💻</span>
+                    <span>Start</span>
+                  </span>
+                </a>
+              </li>
+              <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
+                <a href="#courses" class="block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+                  <span class="flex items-center justify-center space-x-3">
+                    <span class="text-2xl group-hover:animate-bounce">📄</span>
+                    <span>Kursangebote</span>
+                  </span>
+                </a>
+              </li>
+              <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
+                <a href="#about" class="block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+                  <span class="flex items-center justify-center space-x-3">
+                    <span class="text-2xl group-hover:animate-bounce">🚀</span>
+                    <span>Über uns</span>
+                  </span>
+                </a>
+              </li>
+              <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
+                <a href="#contact" class="block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+                  <span class="flex items-center justify-center space-x-3">
+                    <span class="text-2xl group-hover:animate-bounce">📧</span>
+                    <span>Kontakt & Beratung</span>
+                  </span>
+                </a>
+              </li>
+              <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
+                <a href="#faq" class="mobile-nav-link block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+                  <span class="flex items-center justify-center space-x-3">
+                    <span class="text-2xl group-hover:animate-bounce">❓</span>
+                    <span>Häufige Fragen</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  </body>
+</html>
+    
+
+  
