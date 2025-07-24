@@ -158,3 +158,58 @@ document.addEventListener("DOMContentLoaded", function () {
     type();
   }
 });
+
+// Öffnen und Schließen des Impressums
+
+const openBtn = document.getElementById('open-impressum');
+const closeBtn = document.getElementById('close-impressum');
+const modal = document.getElementById('impressum-modal');
+
+if (openBtn && closeBtn && modal) {
+  openBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.classList.add('opacity-100');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('opacity-100');
+    document.body.style.overflow = 'auto';
+  });
+
+  // Optional: Klick außerhalb schließt das Modal
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeBtn.click();
+    }
+  });
+
+  // ESC-Taste schließt das Modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('opacity-100')) {
+      closeBtn.click();
+    }
+  });
+}
+
+const openDatenschutzBtn = document.getElementById('open-datenschutz');
+const closeDatenschutzBtn = document.getElementById('close-datenschutz');
+const datenschutzModal = document.getElementById('datenschutz-modal');
+
+if (openDatenschutzBtn && closeDatenschutzBtn && datenschutzModal) {
+  openDatenschutzBtn.addEventListener('click', () => {
+    datenschutzModal.classList.remove('hidden');
+    // Optional für weichen Übergang:
+    requestAnimationFrame(() => {
+      datenschutzModal.classList.add('opacity-100');
+    });
+  });
+
+  closeDatenschutzBtn.addEventListener('click', () => {
+    datenschutzModal.classList.remove('opacity-100');
+    setTimeout(() => {
+      datenschutzModal.classList.add('hidden');
+    }, 300); // muss zur transition-opacity duration passen
+  });
+}
