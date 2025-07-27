@@ -125,19 +125,6 @@ window.addEventListener('load', () => {
   }, 100);
 });
 
-// Scroll zu „Start“
-document.querySelectorAll('a[href="#start"], a[href="#"]').forEach(link => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    closeMenu();
-    setTimeout(() => {
-      window.scrollTo({
-        top: 64,
-        behavior: "smooth"
-      });
-    }, 200);
-  });
-});
 
 // Typewriter
 document.addEventListener("DOMContentLoaded", function () {
@@ -213,3 +200,50 @@ if (openDatenschutzBtn && closeDatenschutzBtn && datenschutzModal) {
     }, 300); // muss zur transition-opacity duration passen
   });
 }
+
+// JS für Modal-Interaktion 
+
+  document.querySelectorAll('[data-modal-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.modalTarget;
+      const modal = document.getElementById(targetId);
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+      }
+    });
+  });
+
+  document.querySelectorAll('.close-modal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = btn.closest('.fixed');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+    });
+  });
+
+document.querySelectorAll('.nav-start').forEach(link => {
+  const isStartseite =
+    window.location.pathname === '/' ||
+    window.location.pathname.endsWith('/index.html');
+
+  if (isStartseite) {
+    // Scroll auf Startseite (nicht ganz oben, sondern z. B. 64px)
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Optional: Menü schließen, wenn du mobile Menü hast
+      if (typeof closeMenu === 'function') closeMenu();
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: 80,
+          behavior: "smooth"
+        });
+      }, 200);
+    });
+  } else {
+    // Auf anderen Seiten → zurück zur Startseite
+    link.setAttribute('href', '/index.html');
+  }
+});
