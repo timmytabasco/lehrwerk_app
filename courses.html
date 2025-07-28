@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kursangebote | Lehrwerk GmbH</title>
+  <link rel="stylesheet" href="/src/style.css" />
+
   <script type="module" src="/src/index.js"></script>
 </head>
 <body class="bg-neutral-100 text-gray-900 font-mono">
@@ -142,16 +144,17 @@
       <!-- Liste -->
       <div class="col-span-1 sticky top-20">
         <!-- FI Liste -->
+        
         <ul id="fi-list" class="space-y-2">
-          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="awe">Anwendungsentwicklung</button></li>
-          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="sys">Systemintegration</button></li>
-          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="dpa">Daten-/Prozessanalyse</button></li>
+          <li><button class="spec-btn text-center w-full bg-white px-4 py-2 rounded-lg shadow" data-content="awe" data-tab="fi">Anwendungsentwicklung</button></li>
+          <li><button class="spec-btn text-center w-full bg-white px-4 py-2 rounded-lg shadow" data-content="sys" data-tab="fi">Systemintegration</button></li>
+          <li><button class="spec-btn text-center w-full bg-white px-4 py-2 rounded-lg shadow" data-content="dpa" data-tab="fi">Daten-/Prozessanalyse</button></li>
         </ul>
 
         <!-- Kaufmännisch Liste -->
         <ul id="kfm-list" class="space-y-2 hidden">
-          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="itm">IT-Systemkaufleute</button></li>
-          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="dim">Digitalisierungsmanagement</button></li>
+          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="itm" data-tab="kfm">IT-Systemkaufleute</button></li>
+          <li><button class="spec-btn text-left w-full bg-white px-4 py-2 rounded-lg shadow" data-content="dim" data-tab="kfm">Digitalisierungsmanagement</button></li>
         </ul>
       </div>
 
@@ -161,51 +164,6 @@
       </div>
     </div>
   </main>
-
-  <script>
-    // Tabs
-    const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.dataset.tab;
-        document.getElementById('fi-list').classList.toggle('hidden', target !== 'fi');
-        document.getElementById('kfm-list').classList.toggle('hidden', target !== 'kfm');
-
-        tabButtons.forEach(btn => btn.classList.remove('bg-rose-700', 'text-white'));
-        button.classList.add('bg-rose-700', 'text-white');
-      });
-    });
-
-    // Inhalte
-    const contentMap = {
-      awe: `<h2 class="text-xl font-bold mb-2">Fachinformatiker Anwendungsentwicklung</h2><p>Von PHP über C# bis Java – Anwendungsentwickler erstellen betriebsorientierte Softwarelösungen für Unternehmen und Kunden.</p>`,
-      sys: `<h2 class="text-xl font-bold mb-2">Fachinformatiker Systemintegration</h2><p>Planung und Konfiguration komplexer IT-Systeme, Netzwerke und Hardwarelandschaften – oft mit Supportfunktion.</p>`,
-      dpa: `<h2 class="text-xl font-bold mb-2">Fachinformatiker Daten- und Prozessanalyse</h2><p>Analyse und Optimierung von Geschäftsprozessen mithilfe datengetriebener IT-Lösungen.</p>`,
-      itm: `<h2 class="text-xl font-bold mb-2">IT-Systemkaufmann/-frau</h2><p>Schnittstelle zwischen Technik und Kundenberatung: Planung, Kalkulation und Vertrieb von IT-Lösungen.</p>`,
-      dim: `<h2 class="text-xl font-bold mb-2">Kaufmann/-frau für Digitalisierungsmanagement</h2><p>Digitale Geschäftsprozesse analysieren, optimieren und digital transformieren – mit viel Kundenkontakt.</p>`,
-    };
-
-    const specButtons = document.querySelectorAll('.spec-btn');
-    const detailBox = document.getElementById('detail-box');
-
-    specButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.content;
-        detailBox.innerHTML = contentMap[key] || '<p>Keine Informationen vorhanden.</p>';
-      });
-    });
-
-    // Optional: Standard-Tab durch URL-Parameter (?tab=fi)
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const initialTab = params.get('tab');
-      if (initialTab === 'kfm') {
-        document.querySelector('[data-tab="kfm"]').click();
-      } else {
-        document.querySelector('[data-tab="fi"]').click();
-      }
-    });
-  </script>
 
 </body>
 </html>
