@@ -203,24 +203,33 @@ if (openDatenschutzBtn && closeDatenschutzBtn && datenschutzModal) {
 
 // JS für Modal-Interaktion 
 
-  document.querySelectorAll('[data-modal-target]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.dataset.modalTarget;
-      const modal = document.getElementById(targetId);
-      if (modal) {
+document.querySelectorAll('[data-modal-target]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.dataset.modalTarget;
+    const modal = document.getElementById(targetId);
+    if (modal) {
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
         modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100');
-      }
-    });
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+      });
+    }
   });
+});
 
-  document.querySelectorAll('.close-modal').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = btn.closest('.fixed');
+document.querySelectorAll('.close-modal').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const modal = btn.closest('.fixed');
+    if (modal) {
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
       modal.classList.add('opacity-0', 'pointer-events-none');
-      modal.classList.remove('opacity-100');
-    });
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300); // muss zu deiner Transition-Zeit passen
+    }
   });
+});
+
 
 document.querySelectorAll('.nav-start').forEach(link => {
   const isStartseite =
