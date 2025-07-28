@@ -187,289 +187,101 @@
     </section>
 
     <!-- Info-Grid mit 4 interaktiven Kacheln -->
-<section class="py-16 bg-neutral-50">
-  <div class="container mx-auto px-4 text-center space-y-8">
-    <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800 mb-20">Infos auf einen Blick</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto text-left">
+    <section class="py-16 bg-neutral-50">
+      <div class="container mx-auto px-4 text-center space-y-8">
+      <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800 mb-20">Infos auf einen Blick</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto text-left">
 
-      <!-- Standort -->
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <!-- Standort -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
         <h3 class="text-xl font-semibold text-rose-800 mb-2">📍 Standort</h3>
         <p>Trautenaustraße 10<br>38114 Braunschweig</p>
         <button data-modal-target="modal-standort" class="mt-2 text-sm text-rose-700 hover:underline">Karte ansehen</button>
-      </div>
+        </div>
 
-      <!-- Pizzatag -->
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <!-- Pizzatag -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
         <h3 class="text-xl font-semibold text-rose-800 mb-2">🍕 Pizzatag</h3>
         <p>Jeden letzten Freitag im Monat – für Austausch & gute Laune!</p>
         <button data-modal-target="modal-pizzatag" class="mt-2 text-sm text-rose-700 hover:underline">Mehr dazu</button>
-      </div>
+        </div>
 
-      <!-- Öffnungszeiten -->
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <!-- Öffnungszeiten -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
         <h3 class="text-xl font-semibold text-rose-800 mb-2">🕐 Öffnungszeiten</h3>
         <p>Montag – Freitag<br>08:00 – 16:00 Uhr</p>
         <button data-modal-target="modal-zeiten" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
-      </div>
+        </div>
 
-      <!-- Erfolgsquote -->
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <!-- Erfolgsquote -->
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
         <h3 class="text-xl font-semibold text-rose-800 mb-2">🎓 Erfolgsquote</h3>
         <p>Viele Absolventen starten direkt nach der Umschulung in den neuen Job.</p>
         <button data-modal-target="modal-erfolg" class="mt-2 text-sm text-rose-700 hover:underline">Erfahrungen ansehen</button>
+        </div>
+
       </div>
+      </div>
+    </section>
 
+    <!-- Modals -->
+    <div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <h2 class="text-xl font-bold mb-4">Unser Standort</h2>
+      <p>Trautenaustraße 10, 38114 Braunschweig</p>
+      <iframe class="w-full h-64 mt-4 rounded-lg shadow" src="https://maps.google.com/maps?q=Lehrwerk%20GmbH%20Braunschweig&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+      </div>
     </div>
-  </div>
-</section>
 
-<!-- Modals -->
-<div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Unser Standort</h2>
-    <p>Trautenaustraße 10, 38114 Braunschweig</p>
-    <iframe class="w-full h-64 mt-4 rounded-lg shadow" src="https://maps.google.com/maps?q=Lehrwerk%20GmbH%20Braunschweig&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
-  </div>
-</div>
+    <div id="modal-pizzatag" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <h2 class="text-xl font-bold mb-4">Pizzatag</h2>
+      <p>Jeden letzten Freitag im Monat laden wir alle Teilnehmer und Dozenten zum gemeinsamen Pizzaessen ein. So stärken wir das Miteinander und fördern informellen Austausch.</p>
+      </div>
+    </div>
 
-<div id="modal-pizzatag" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
-    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Pizzatag</h2>
-    <p>Jeden letzten Freitag im Monat laden wir alle Teilnehmer und Dozenten zum gemeinsamen Pizzaessen ein. So stärken wir das Miteinander und fördern informellen Austausch.</p>
-  </div>
-</div>
+    <div id="modal-zeiten" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <h2 class="text-xl font-bold mb-4">Öffnungszeiten</h2>
+      <p>Unser Standort ist Montag bis Freitag von 08:00 bis 16:00 Uhr für Sie geöffnet.<br>Beratungstermine können individuell vereinbart werden.</p>
+      </div>
+    </div>
 
-<div id="modal-zeiten" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
-    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Öffnungszeiten</h2>
-    <p>Unser Standort ist Montag bis Freitag von 08:00 bis 16:00 Uhr für Sie geöffnet.<br>Beratungstermine können individuell vereinbart werden.</p>
-  </div>
-</div>
-
-<div id="modal-erfolg" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
-    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Erfolgreich durchstarten</h2>
-    <p>Mehr als 80 % unserer Absolventen starten direkt im Anschluss an die Umschulung in ein festes Arbeitsverhältnis – wir begleiten Sie bis zur Integration in den Arbeitsmarkt!</p>
-  </div>
-</div>
+    <div id="modal-erfolg" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <h2 class="text-xl font-bold mb-4">Erfolgreich durchstarten</h2>
+      <p>Mehr als 80 % unserer Absolventen starten direkt im Anschluss an die Umschulung in ein festes Arbeitsverhältnis – wir begleiten Sie bis zur Integration in den Arbeitsmarkt!</p>
+      </div>
+    </div>
 
     <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
-  <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
-    <p>&copy; 2025 Lehrwerk GmbH</p>
-    <div class="flex flex-wrap justify-center space-x-4">
-      <button id="open-impressum" class="hover:text-red-500 transition">
-        Impressum
-      </button>
-      <span class="block">|</span>
-      <button id="open-datenschutz" class="hover:text-red-500 transition">
-        Datenschutz
-      </button>
+      <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
+      <p>&copy; 2025 Lehrwerk GmbH</p>
+      <div class="flex flex-wrap justify-center space-x-4">
+        <button id="open-impressum" class="hover:text-red-500 transition">Impressum</button>
+        <span class="block">|</span>
+        <button id="open-datenschutz" class="hover:text-red-500 transition">Datenschutz</button>
+      </div>
+      </div>
+    </footer>
+
+    <div id="impressum-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+      <button id="close-impressum" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
+      <div class="content" id="impressum-box"></div>
+      </div>
     </div>
-  </div>
-</footer>
 
-
-    <div id="impressum-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-    <button id="close-impressum" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Impressum</h2>
-
-    <p class="mb-2 font-semibold">Lehrwerk GmbH</p>
-    <p class="mb-2">
-      Trautenaustraße 10<br />
-      38114 Braunschweig
-    </p>
-    <p class="mb-2">
-      Telefon: 0531 590 631 00<br />
-      Fax: 0531 590 630 98<br />
-      E-Mail: <a href="mailto:kontakt@lehrwerk.de" class="underline text-blue-700">kontakt@lehrwerk.de</a><br />
-      Internet: <a href="https://www.lehrwerk.de" class="underline text-blue-700" target="_blank">www.lehrwerk.de</a>
-    </p>
-
-    <p class="mt-4 font-semibold">Vertreten durch die Geschäftsführer:</p>
-    <p class="mb-4">
-      Ulrich Meißner<br />
-      Patrick Pilke
-    </p>
-
-    <p class="mb-4">Gerichtsstand ist Braunschweig</p>
-
-    <h3 class="font-semibold mt-6 mb-2">Urheberrecht</h3>
-    <p class="text-sm mb-4">
-      Die durch die Seitenbetreiber erstellten Inhalte und Werke auf dieser Seite unterliegen dem deutschen Urheberrecht.
-      Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts
-      bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind
-      nur für den privaten, nichtkommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber
-      erstellt wurden, werden die Urheberrechte beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet.
-      Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis.
-      Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
-    </p>
-
-    <h3 class="font-semibold mt-6 mb-2">Haftung für Inhalte</h3>
-    <p class="text-sm mb-4">
-      Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität
-      der Inhalte können wir jedoch keine Gewähr übernehmen. Als Dienstanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene
-      Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
-      Dienstanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder
-      nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder
-      Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche
-      Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden
-      von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
-    </p>
-
-    <h3 class="font-semibold mt-6 mb-2">Online Redaktion</h3>
-    <p class="text-sm mb-4">
-      Patrick Pilke<br />
-      Trautenaustraße 10<br />
-      38114 Braunschweig
-    </p>
-
-    <h3 class="font-semibold mt-6 mb-2">Haftung für Links</h3>
-    <p class="text-sm mb-4">
-      Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb
-      können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets
-      der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
-      Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht
-      erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer
-      Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
-    </p>
-
-    <h3 class="font-semibold mt-6 mb-2">Datenschutz</h3>
-    <p class="text-sm mb-2">
-      Die Nutzung unserer Website ist in der Regel ohne Angaben personenbezogener Daten möglich. Soweit auf unseren Seiten
-      personenbezogene Daten (beispielsweise Namen, Anschrift oder E-Mailadressen) erhoben werden, erfolgt dies, soweit
-      möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte
-      weitergegeben.
-    </p>
-    <p class="text-sm mb-2">
-      Wir weisen darauf hin, dass die Datenübertragung im Internet (z. B. bei der Kommunikation per E-Mail)
-      Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.
-    </p>
-    <p class="text-sm mb-2">
-      Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von
-      nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die
-      Betreiber der Seite behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von
-      Werbeinformationen, etwa durch Spam-Mails, vor.
-    </p>
-  </div>
-</div>
-<div id="datenschutz-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-    <button id="close-datenschutz" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
-    <h2 class="text-xl font-bold mb-4">Datenschutzerklärung</h2>
-
-    <p class="text-sm mb-4">
-      Diese Datenschutzerklärung klärt Sie über die Art, den Umfang und Zweck der Verarbeitung von personenbezogenen Daten (nachfolgend kurz „Daten“) innerhalb unseres Onlineangebotes und der mit ihm verbundenen Webseiten, Funktionen und Inhalte sowie externen Onlinepräsenzen, wie z.B. unser Social Media Profile, auf.
-    </p>
-
-    <p class="font-semibold mt-4 mb-1">Verantwortlicher</p>
-    <p class="text-sm mb-2">
-      Lehrwerk GmbH<br />
-      E-Mail: kontakt@lehrwerk.de<br />
-      Geschäftsführer: Patrick Pilke<br />
-      <a href="https://www.lehrwerk.de/impressum/" class="underline text-blue-700" target="_blank">Link zum Impressum</a>
-    </p>
-
-    <p class="font-semibold mt-4 mb-1">Datenschutzbeauftragter</p>
-    <p class="text-sm mb-2">
-      Patrick Pilke<br />
-      Trautenaustraße 10<br />
-      38114 Braunschweig<br />
-      Tel: 0531 590 631 00<br />
-      E-Mail: datenschutzbeauftragter@lehrwerk.de
-    </p>
-
-    <!-- Mehr Text hier einfügen nach Bedarf -->
-    <div class="text-sm mt-4 italic text-gray-900">
-      <h3 class="font-semibold">Arten der verarbeiteten Daten:</h3>
-      <ul class="list-disc pl-5">
-        <li>Nutzungsdaten (z. B., besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten).</li>
-        <li>Meta-/Kommunikationsdaten (z. B., Geräte-Informationen, IP-Adressen).</li>
-      </ul>
-
-      <h3 class="font-semibold mt-4">Kategorien betroffener Personen:</h3>
-      <p>Besucher und Nutzer des Onlineangebotes (nachfolgend bezeichnen wir die betroffenen Personen zusammenfassend auch als „Nutzer“).</p>
-
-      <h3 class="font-semibold mt-4">Zweck der Verarbeitung:</h3>
-      <p>Zurverfügungstellung des Onlineangebotes, seiner Funktionen und Inhalte.</p>
-
-      <h3 class="font-semibold mt-4">Verwendete Begrifflichkeiten:</h3>
-      <ul class="list-disc pl-5">
-        <li>
-          <strong>Personenbezogene Daten:</strong> Alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen.
-        </li>
-        <li>
-          <strong>Verarbeitung:</strong> Jeder mit oder ohne Hilfe automatisierter Verfahren ausgeführte Vorgang im Zusammenhang mit personenbezogenen Daten.
-        </li>
-        <li>
-          <strong>Pseudonymisierung:</strong> Verarbeitung personenbezogener Daten in einer Weise, dass sie ohne zusätzliche Informationen nicht mehr einer spezifischen Person zugeordnet werden können.
-        </li>
-        <li>
-          <strong>Profiling:</strong> Automatisierte Verarbeitung personenbezogener Daten zur Bewertung persönlicher Aspekte einer Person.
-        </li>
-        <li>
-          <strong>Verantwortlicher:</strong> Die Person oder Stelle, die über die Zwecke und Mittel der Verarbeitung entscheidet.
-        </li>
-        <li>
-          <strong>Auftragsverarbeiter:</strong> Eine Person oder Stelle, die personenbezogene Daten im Auftrag des Verantwortlichen verarbeitet.
-        </li>
-      </ul>
-
-      <h3 class="font-semibold mt-4">Rechtsgrundlagen der Verarbeitung von Besucherdaten:</h3>
-      <p>Rechtsgrundlage für die Verarbeitung von reinen Besucherdaten ist Art. 6 Abs. 1 lit. f) DSGVO (Datenverarbeitung auf Basis einer Interessenabwägung).</p>
-
-      <h3 class="font-semibold mt-4">Maßgebliche Rechtsgrundlagen:</h3>
-      <p>Nach Maßgabe des Art. 13 DSGVO teilen wir Ihnen die Rechtsgrundlagen unserer Datenverarbeitungen mit:</p>
-      <ul class="list-disc pl-5">
-        <li>Einwilligungen: Art. 6 Abs. 1 lit. a und Art. 7 DSGVO</li>
-        <li>Vertragserfüllung: Art. 6 Abs. 1 lit. b DSGVO</li>
-        <li>Rechtliche Verpflichtungen: Art. 6 Abs. 1 lit. c DSGVO</li>
-        <li>Berechtigte Interessen: Art. 6 Abs. 1 lit. f DSGVO</li>
-        <li>Lebenswichtige Interessen: Art. 6 Abs. 1 lit. d DSGVO</li>
-      </ul>
-
-      <h3 class="font-semibold mt-4">Löschung von Daten:</h3>
-      <p>Die von uns verarbeiteten Daten werden nach Maßgabe der Art. 17 und 18 DSGVO gelöscht oder in ihrer Verarbeitung eingeschränkt.</p>
-
-      <h3 class="font-semibold mt-4">Sicherheitsmaßnahmen:</h3>
-      <p>Wir treffen technische und organisatorische Maßnahmen, um ein dem Risiko angemessenes Schutzniveau zu gewährleisten (Art. 32 DSGVO).</p>
-
-      <h3 class="font-semibold mt-4">Erhebung von Zugriffsdaten und Logfiles:</h3>
-      <p>Unser Hostinganbieter erhebt auf Grundlage berechtigter Interessen (Art. 6 Abs. 1 lit. f DSGVO) Daten über jeden Zugriff auf den Server (Serverlogfiles).</p>
-
-      <h3 class="font-semibold mt-4">Widerspruchs- und Beseitigungsmöglichkeit:</h3>
-      <p>Die Erfassung der Daten zur Bereitstellung der Website ist zwingend erforderlich. Es besteht keine Widerspruchsmöglichkeit.</p>
-
-      <h3 class="font-semibold mt-4">Rechte der betroffenen Personen:</h3>
-      <ul class="list-disc pl-5">
-        <li>Auskunft über verarbeitete Daten (Art. 15 DSGVO).</li>
-        <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO).</li>
-        <li>Löschung der Daten (Art. 17 DSGVO).</li>
-        <li>Einschränkung der Verarbeitung (Art. 18 DSGVO).</li>
-        <li>Datenübertragbarkeit (Art. 20 DSGVO).</li>
-        <li>Beschwerde bei der Aufsichtsbehörde (Art. 77 DSGVO).</li>
-      </ul>
-
-      <h3 class="font-semibold mt-4">Widerspruchsrecht:</h3>
-      <p>Sie können der Verarbeitung Ihrer Daten nach Maßgabe des Art. 21 DSGVO jederzeit widersprechen.</p>
-
-      <h3 class="font-semibold mt-4">Änderungen dieser Datenschutzbestimmungen:</h3>
-      <p>Wir behalten uns das Recht vor, diese Datenschutzbestimmungen jederzeit mit Wirkung für die Zukunft zu ändern.</p>
-
-      <h3 class="font-semibold mt-4">Google Tag Manager:</h3>
-      <p>Diese Website benutzt den Google Tag Manager. Das Tool selbst erfasst keine personenbezogenen Daten.</p>
+    <div id="datenschutz-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+      <button id="close-datenschutz" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
+      <div class="content" id="datenschutz-box"></div>
+      </div>
     </div>
-  </div>
-</div>
 
-
-  </body>
+</body>
 </html>
-    
-
-  

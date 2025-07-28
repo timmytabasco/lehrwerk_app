@@ -253,3 +253,55 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('[data-tab="fi"]').click();
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Modal-Elemente
+  const impressumModal = document.getElementById('impressum-modal');
+  const datenschutzModal = document.getElementById('datenschutz-modal');
+  const impressumBox = document.getElementById('impressum-box');
+  const datenschutzBox = document.getElementById('datenschutz-box');
+
+  // Buttons
+  const openImpressumBtn = document.getElementById('open-impressum');
+  const closeImpressumBtn = document.getElementById('close-impressum');
+  const openDatenschutzBtn = document.getElementById('open-datenschutz');
+  const closeDatenschutzBtn = document.getElementById('close-datenschutz');
+
+  // Inhalte laden
+  fetch('/data/rechtliches.json')
+    .then(res => res.json())
+    .then(data => {
+      const recht = data.recht;
+
+      if (recht.impressum) {
+        impressumBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.impressum.title}</h2>${recht.impressum.content}`;
+      }
+
+      if (recht.datenschutz) {
+        datenschutzBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.datenschutz.title}</h2>${recht.datenschutz.content}`;
+      }
+    })
+    .catch(err => {
+      impressumBox.innerHTML = "<p>Fehler beim Laden des Impressums.</p>";
+      datenschutzBox.innerHTML = "<p>Fehler beim Laden der Datenschutzerklärung.</p>";
+      console.error('Fehler beim Laden von rechtliches.json:', err);
+    });
+
+  // Öffnen
+  openImpressumBtn.addEventListener('click', () => {
+    impressumModal.classList.remove('hidden');
+  });
+
+  openDatenschutzBtn.addEventListener('click', () => {
+    datenschutzModal.classList.remove('hidden');
+  });
+
+  // Schließen
+  closeImpressumBtn.addEventListener('click', () => {
+    impressumModal.classList.add('hidden');
+  });
+
+  closeDatenschutzBtn.addEventListener('click', () => {
+    datenschutzModal.classList.add('hidden');
+  });
+});
