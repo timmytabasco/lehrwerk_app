@@ -150,51 +150,26 @@
     </main>
 
     <!-- Kursvorschau -->
-    <section id="coursepreview" class="py-24 scroll-mt-24 lg:py-[10.25rem]">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl lg:text-4xl font-bold text-center text-neutral-800 mb-20">
-          Kursvorschau
-        </h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <!-- Fachinformatiker-Karte -->
-          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105">
-            <h3 class="text-2xl font-semibold text-rose-800 mb-4">Technischer Schwerpunkt</h3>
-            <ul class="list-disc pl-5">
-              <li>Fachinformatiker Anwendungsentwicklung</li>
-              <li>Fachinformatiker Systemintegration</li>
-              <li>Fachinformatiker Daten- und Prozessanalyse</li>
-            </ul>
-            <span class="block my-3">24 Monate | 08:00 - 16:00 Uhr</span>
-            <a href="courses.html?tab=fi" class="inline-block mt-auto px-6 py-2 bg-rose-700 hover:bg-rose-800 text-white font-medium rounded-lg transition">
-              Mehr erfahren
-            </a>
-          </div>
-
-          <!-- Kaufmännisch-Karte -->
-          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105">
-            <h3 class="text-2xl font-semibold text-rose-800 mb-4">Kaufmännischer Schwerpunkt</h3>
-            <ul class="list-disc pl-5">
-              <li>IT-Systemkaufmann/-frau</li>
-              <li>Kaufmann/-frau für Digitalisierungsmanagement</li>
-            </ul>
-            <span class="block my-3">24 Monate | 08:00 - 16:00 Uhr</span>
-            <a href="courses.html?tab=kfm" class="inline-block mt-auto px-6 py-2 bg-rose-700 hover:bg-rose-800 text-white font-medium rounded-lg transition">
-              Mehr erfahren
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+   <section id="coursepreview" class="py-24 scroll-mt-24 lg:py-[10.25rem]">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl lg:text-4xl font-bold text-center text-neutral-800 mb-20">
+      Kursvorschau
+    </h2>
+    <div id="coursepreview-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+    </div>
+  </div>
+</section>
 
     <!-- Info-Grid mit 4 interaktiven Kacheln -->
     <section class="py-16 bg-neutral-50">
       <div class="container mx-auto px-4 text-center space-y-8">
       <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800 mb-20">Infos auf einen Blick</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto text-left">
+      <div id="info-modals" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto text-left">
 
         <!-- Standort -->
         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
-        <h3 class="text-xl font-semibold text-rose-800 mb-2">📍 Standort</h3>
+        <h3 class="text-xl font-semibold text-rose-800 mb-2">📍 Anfahrt & Parken</h3>
         <p>Trautenaustraße 10<br>38114 Braunschweig</p>
         <button data-modal-target="modal-standort" class="mt-2 text-sm text-rose-700 hover:underline">Karte ansehen</button>
         </div>
@@ -215,9 +190,21 @@
 
         <!-- Erfolgsquote -->
         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
-        <h3 class="text-xl font-semibold text-rose-800 mb-2">🎓 Erfolgsquote</h3>
-        <p>Viele Absolventen starten direkt nach der Umschulung in den neuen Job.</p>
-        <button data-modal-target="modal-erfolg" class="mt-2 text-sm text-rose-700 hover:underline">Erfahrungen ansehen</button>
+        <h3 class="text-xl font-semibold text-rose-800 mb-2">📓 Lernmaterialien inklusive!</h3>
+        <p>Lernmaterial wird gestellt – keine Extrakosten.</p>
+        <button data-modal-target="modal-material" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
+        </div>
+
+         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <h3 class="text-xl font-semibold text-rose-800 mb-2">💲100% förderbar!</h3>
+        <p>Mit Bildungsgutschein komplett förderbar.</p>
+        <button data-modal-target="modal-foerderung" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
+        </div>
+
+         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <h3 class="text-xl font-semibold text-rose-800 mb-2">📖 Abschlüsse auf einen Blick!</h3>
+        <p></p>
+        <button data-modal-target="modal-abschluss" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
         </div>
 
       </div>
@@ -225,38 +212,48 @@
     </section>
 
     <!-- Modals -->
-    <div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-      <h2 class="text-xl font-bold mb-4">Unser Standort</h2>
-      <p>Trautenaustraße 10, 38114 Braunschweig</p>
-      <iframe class="w-full h-64 mt-4 rounded-lg shadow" src="https://maps.google.com/maps?q=Lehrwerk%20GmbH%20Braunschweig&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
-      </div>
+   <div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+    <div class="modal-content"></div>
     </div>
+  </div>
 
     <div id="modal-pizzatag" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
       <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-      <h2 class="text-xl font-bold mb-4">Pizzatag</h2>
-      <p>Jeden letzten Freitag im Monat laden wir alle Teilnehmer und Dozenten zum gemeinsamen Pizzaessen ein. So stärken wir das Miteinander und fördern informellen Austausch.</p>
+      <div class="modal-content"></div>
       </div>
     </div>
 
     <div id="modal-zeiten" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
       <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-      <h2 class="text-xl font-bold mb-4">Öffnungszeiten</h2>
-      <p>Unser Standort ist Montag bis Freitag von 08:00 bis 16:00 Uhr für Sie geöffnet.<br>Beratungstermine können individuell vereinbart werden.</p>
+      <div class="modal-content"></div>
       </div>
     </div>
 
-    <div id="modal-erfolg" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="modal-material" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
       <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-      <h2 class="text-xl font-bold mb-4">Erfolgreich durchstarten</h2>
-      <p>Mehr als 80 % unserer Absolventen starten direkt im Anschluss an die Umschulung in ein festes Arbeitsverhältnis – wir begleiten Sie bis zur Integration in den Arbeitsmarkt!</p>
+      <div class="modal-content"></div>
       </div>
     </div>
+
+        <div id="modal-foerderung" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <div class="modal-content"></div>
+      </div>
+    </div>
+
+     <div id="modal-abschluss" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <div class="modal-content"></div>
+      </div>
+    </div>
+
 
     <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
       <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">

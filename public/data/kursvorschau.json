@@ -1,0 +1,28 @@
+[
+  {
+    "id": "fi",
+    "headline": "Technischer Schwerpunkt",
+    "courses": [
+      "Fachinformatiker Anwendungsentwicklung",
+      "Fachinformatiker Systemintegration",
+      "Fachinformatiker Daten- und Prozessanalyse"
+    ],
+    "duration": "24 Monate | Präsenzunterricht von 08:00 - 16:00 Uhr",
+    "buttonText": "Mehr erfahren",
+    "link": "courses.html?tab=fi",
+    "buttonClass": "mt-16"
+    
+  },
+  {
+    "id": "kfm",
+    "headline": "Kaufmännischer Schwerpunkt",
+    "courses": [
+      "IT-Systemkaufmann/-frau",
+      "Kaufmann/-frau für Digitalisierungsmanagement"
+    ],
+    "duration": "24 Monate | Präsenzunterricht von 08:00 - 16:00 Uhr",
+    "buttonText": "Mehr erfahren",
+    "link": "courses.html?tab=kfm",
+    "buttonClass": "mt-12"
+  }
+]

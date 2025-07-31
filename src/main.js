@@ -464,3 +464,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+function loadInfoModals() {
+  fetch('/data/modals.json')
+    .then(res => res.json())
+    .then(data => {
+      Object.entries(data).forEach(([modalId, modalContent]) => {
+        const modalElem = document.getElementById('modal-' + modalId);
+        if (modalElem) {
+          const contentBox = modalElem.querySelector('.modal-content');
+          if (contentBox) {
+            contentBox.innerHTML = `
+              <h2 class="text-xl font-bold mb-4">${modalContent.title}</h2>
+              ${modalContent.html}
+            `;
+          }
+        }
+      });
+    });
+}
+window.addEventListener('DOMContentLoaded', loadInfoModals);
+
+
+function loadCoursePreview() {
+  fetch('/data/kursvorschau.json')
+    .then(res => res.json())
+    .then(data => {
+      const grid = document.getElementById('coursepreview-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      data.forEach(card => {
+        grid.innerHTML += `
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105 ">
+            <h3 class="text-2xl font-semibold text-rose-800 mb-4">${card.headline}</h3>
+            <ul class="list-disc pl-5 mb-4">
+              ${card.courses.map(course => `<li>${course}</li>`).join('')}
+            </ul>
+            <span class="block my-3">${card.duration}</span>
+            <a href="${card.link}" class="inline-block mt-2 px-6 py-2 bg-rose-700 text-white rounded-lg"> ${card.buttonText}</a>
+
+
+          </div>
+        `;
+      });
+    });
+}
+window.addEventListener('DOMContentLoaded', loadCoursePreview);
