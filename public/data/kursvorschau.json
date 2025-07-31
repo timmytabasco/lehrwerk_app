@@ -9,8 +9,7 @@
     ],
     "duration": "24 Monate | Präsenzunterricht von 08:00 - 16:00 Uhr",
     "buttonText": "Mehr erfahren",
-    "link": "courses.html?tab=fi",
-    "buttonClass": "mt-16"
+    "link": "courses.html?tab=fi"
     
   },
   {
@@ -18,11 +17,11 @@
     "headline": "Kaufmännischer Schwerpunkt",
     "courses": [
       "IT-Systemkaufmann/-frau",
-      "Kaufmann/-frau für Digitalisierungsmanagement"
+      "Kaufmann/-frau für Digitalisierungsmanagement",
+      "   "
     ],
     "duration": "24 Monate | Präsenzunterricht von 08:00 - 16:00 Uhr",
     "buttonText": "Mehr erfahren",
-    "link": "courses.html?tab=kfm",
-    "buttonClass": "mt-12"
+    "link": "courses.html?tab=kfm"  
   }
 ]

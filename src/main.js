@@ -75,28 +75,43 @@ function closeMenu() {
   document.body.style.width = '';
 }
 
-// =====================================================
-// 4. TYPEWRITER EFFEKT
-// =====================================================
-
-function initTypewriter() {
-  const target = document.getElementById("typewriter");
-  if (target) {
-    const text = "Mach den ersten Schritt in die Digitalisierung!👨‍💻";
-    let index = 0;
-    function type() {
-      if (index < text.length) {
-        target.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, 30);
-      }
-    }
-    type();
+function initMobileMenuEvents() {
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isMenuOpen ? closeMenu() : openMenu();
+    });
   }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMenu);
+  }
+
+  menuItems.forEach(item => {
+    const link = item.querySelector('a');
+    if (link) {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    }
+  });
+
+  // Keyboard und Resize Events
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024 && isMenuOpen) {
+      closeMenu();
+    }
+  });
 }
 
 // =====================================================
-// 5. MODAL FUNKTIONEN
+// 4. MODAL FUNKTIONEN
 // =====================================================
 
 function initImpressumModal() {
@@ -173,30 +188,7 @@ function initGenericModals() {
 }
 
 // =====================================================
-// 6. NAVIGATION FUNKTIONEN
-// =====================================================
-
-function initStartNavigationLinks() {
-  document.querySelectorAll('.nav-start').forEach(link => {
-    const isStartseite =
-      window.location.pathname === '/' ||
-      window.location.pathname.endsWith('/index.html');
-    if (isStartseite) {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (typeof closeMenu === 'function') closeMenu();
-        setTimeout(() => {
-          window.scrollTo({ top: 80, behavior: "smooth" });
-        }, 200);
-      });
-    } else {
-      link.setAttribute('href', '/index.html');
-    }
-  });
-}
-
-// =====================================================
-// 7. TAB SYSTEM FUNKTIONEN
+// 5. TAB SYSTEM FUNKTIONEN
 // =====================================================
 
 function initTabButtons() {
@@ -237,68 +229,6 @@ function initSpecializationButtons() {
   });
 }
 
-// =====================================================
-// 8. DATEN LADEN FUNKTIONEN
-// =====================================================
-
-function loadCourseContent() {
-  fetch('/data/kurse.json')
-    .then(res => res.json())
-    .then(data => {
-      contentMap = data;
-      initSpecializationButtons();
-    });
-}
-
-function loadLegalContent() {
-  const impressumModal = document.getElementById('impressum-modal');
-  const datenschutzModal = document.getElementById('datenschutz-modal');
-  const impressumBox = document.getElementById('impressum-box');
-  const datenschutzBox = document.getElementById('datenschutz-box');
-
-  const openImpressumBtn = document.getElementById('open-impressum');
-  const closeImpressumBtn = document.getElementById('close-impressum');
-  const openDatenschutzBtn = document.getElementById('open-datenschutz');
-  const closeDatenschutzBtn = document.getElementById('close-datenschutz');
-
-  // Inhalte laden
-  fetch('/data/rechtliches.json')
-    .then(res => res.json())
-    .then(data => {
-      const recht = data.recht;
-
-      if (recht.impressum) {
-        impressumBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.impressum.title}</h2>${recht.impressum.content}`;
-      }
-
-      if (recht.datenschutz) {
-        datenschutzBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.datenschutz.title}</h2>${recht.datenschutz.content}`;
-      }
-    })
-    .catch(err => {
-      impressumBox.innerHTML = "<p>Fehler beim Laden des Impressums.</p>";
-      datenschutzBox.innerHTML = "<p>Fehler beim Laden der Datenschutzerklärung.</p>";
-      console.error('Fehler beim Laden von rechtliches.json:', err);
-    });
-
-  // Event Listeners
-  openImpressumBtn.addEventListener('click', () => {
-    impressumModal.classList.remove('hidden');
-  });
-
-  openDatenschutzBtn.addEventListener('click', () => {
-    datenschutzModal.classList.remove('hidden');
-  });
-
-  closeImpressumBtn.addEventListener('click', () => {
-    impressumModal.classList.add('hidden');
-  });
-
-  closeDatenschutzBtn.addEventListener('click', () => {
-    datenschutzModal.classList.add('hidden');
-  });
-}
-
 function initializeTabFromURL() {
   const params = new URLSearchParams(window.location.search);
   const initialTab = params.get('tab');
@@ -311,116 +241,10 @@ function initializeTabFromURL() {
 }
 
 // =====================================================
-// 9. EVENT LISTENERS - MOBILE MENU
+// 6. SLIDER FUNKTIONEN
 // =====================================================
 
-if (hamburgerBtn) {
-  hamburgerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    isMenuOpen ? closeMenu() : openMenu();
-  });
-}
-
-if (mobileOverlay) {
-  mobileOverlay.addEventListener('click', closeMenu);
-}
-
-menuItems.forEach(item => {
-  const link = item.querySelector('a');
-  if (link) {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
-  }
-});
-
-// =====================================================
-// 10. EVENT LISTENERS - GLOBAL
-// =====================================================
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && isMenuOpen) {
-    closeMenu();
-  }
-});
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth >= 1024 && isMenuOpen) {
-    closeMenu();
-  }
-});
-
-window.addEventListener('load', () => {
-  document.body.style.overflow = 'auto';
-  document.body.style.position = 'static';
-  document.body.style.width = 'auto';
-  setTimeout(() => {
-    window.scrollBy(0, 1);
-    window.scrollTo({ top: 64, behavior: 'instant' });
-  }, 100);
-});
-
-// =====================================================
-// 11. DOCUMENT READY EVENT LISTENERS
-// =====================================================
-
-document.addEventListener("DOMContentLoaded", function () {
-  initTypewriter();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadLegalContent();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  initializeTabFromURL();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const initialTab = params.get('tab');
-  if (initialTab === 'kfm') {
-    document.querySelector('[data-tab="kfm"]')?.click();
-  } else {
-    document.querySelector('[data-tab="fi"]')?.click();
-  }
-});
-
-// =====================================================
-// 12. INITIALISIERUNG
-// =====================================================
-
-// Modals initialisieren
-initImpressumModal();
-initDatenschutzModal();
-initGenericModals();
-
-// Navigation initialisieren
-initStartNavigationLinks();
-
-// Tab System initialisieren
-initTabButtons();
-
-// Content laden
-loadCourseContent();
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('#about-slider .slide');
-  const nextBtn = document.getElementById('next-slide');
-  let current = 0;
-
-  if (slides.length > 0 && nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      slides[current].classList.add('hidden');
-      current = (current + 1) % slides.length;
-      slides[current].classList.remove('hidden');
-    });
-  }
-});
-
-// === Über uns Slider: Swipe, Button & Progress-Bar ===
-document.addEventListener('DOMContentLoaded', () => {
+function initAboutSlider() {
   const slider = document.getElementById('about-slider');
   if (!slider) return;
 
@@ -463,7 +287,138 @@ document.addEventListener('DOMContentLoaded', () => {
       showSlide(current);
     });
   }
-});
+}
+
+// Fallback für den einfachen Slider (falls der obere nicht funktioniert)
+function initSimpleSlider() {
+  const slides = document.querySelectorAll('#about-slider .slide');
+  const nextBtn = document.getElementById('next-slide');
+  let current = 0;
+
+  if (slides.length > 0 && nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      slides[current].classList.add('hidden');
+      current = (current + 1) % slides.length;
+      slides[current].classList.remove('hidden');
+    });
+  }
+}
+
+// =====================================================
+// 7. NAVIGATION FUNKTIONEN
+// =====================================================
+
+function initStartNavigationLinks() {
+  document.querySelectorAll('.nav-start').forEach(link => {
+    const isStartseite =
+      window.location.pathname === '/' ||
+      window.location.pathname.endsWith('/index.html');
+    if (isStartseite) {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (typeof closeMenu === 'function') closeMenu();
+        setTimeout(() => {
+          window.scrollTo({ top: 80, behavior: "smooth" });
+        }, 200);
+      });
+    } else {
+      link.setAttribute('href', '/index.html');
+    }
+  });
+}
+
+// =====================================================
+// 8. SPEZIALEFFEKTE
+// =====================================================
+
+function initTypewriter() {
+  const target = document.getElementById("typewriter");
+  if (target) {
+    const text = "Mach den ersten Schritt in die Digitalisierung!👨‍💻";
+    let index = 0;
+    function type() {
+      if (index < text.length) {
+        target.textContent += text.charAt(index);
+        index++;
+        setTimeout(type, 30);
+      }
+    }
+    type();
+  }
+}
+
+// =====================================================
+// 9. DATEN LADEN FUNKTIONEN
+// =====================================================
+
+function loadCourseContent() {
+  fetch('/data/kurse.json')
+    .then(res => res.json())
+    .then(data => {
+      contentMap = data;
+      initSpecializationButtons();
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von kurse.json:', err);
+    });
+}
+
+function loadLegalContent() {
+  const impressumModal = document.getElementById('impressum-modal');
+  const datenschutzModal = document.getElementById('datenschutz-modal');
+  const impressumBox = document.getElementById('impressum-box');
+  const datenschutzBox = document.getElementById('datenschutz-box');
+
+  const openImpressumBtn = document.getElementById('open-impressum');
+  const closeImpressumBtn = document.getElementById('close-impressum');
+  const openDatenschutzBtn = document.getElementById('open-datenschutz');
+  const closeDatenschutzBtn = document.getElementById('close-datenschutz');
+
+  // Inhalte laden
+  fetch('/data/rechtliches.json')
+    .then(res => res.json())
+    .then(data => {
+      const recht = data.recht;
+
+      if (recht.impressum && impressumBox) {
+        impressumBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.impressum.title}</h2>${recht.impressum.content}`;
+      }
+
+      if (recht.datenschutz && datenschutzBox) {
+        datenschutzBox.innerHTML = `<h2 class="text-xl font-bold mb-4">${recht.datenschutz.title}</h2>${recht.datenschutz.content}`;
+      }
+    })
+    .catch(err => {
+      if (impressumBox) impressumBox.innerHTML = "<p>Fehler beim Laden des Impressums.</p>";
+      if (datenschutzBox) datenschutzBox.innerHTML = "<p>Fehler beim Laden der Datenschutzerklärung.</p>";
+      console.error('Fehler beim Laden von rechtliches.json:', err);
+    });
+
+  // Event Listeners
+  if (openImpressumBtn && impressumModal) {
+    openImpressumBtn.addEventListener('click', () => {
+      impressumModal.classList.remove('hidden');
+    });
+  }
+
+  if (openDatenschutzBtn && datenschutzModal) {
+    openDatenschutzBtn.addEventListener('click', () => {
+      datenschutzModal.classList.remove('hidden');
+    });
+  }
+
+  if (closeImpressumBtn && impressumModal) {
+    closeImpressumBtn.addEventListener('click', () => {
+      impressumModal.classList.add('hidden');
+    });
+  }
+
+  if (closeDatenschutzBtn && datenschutzModal) {
+    closeDatenschutzBtn.addEventListener('click', () => {
+      datenschutzModal.classList.add('hidden');
+    });
+  }
+}
 
 function loadInfoModals() {
   fetch('/data/modals.json')
@@ -481,10 +436,11 @@ function loadInfoModals() {
           }
         }
       });
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von modals.json:', err);
     });
 }
-window.addEventListener('DOMContentLoaded', loadInfoModals);
-
 
 function loadCoursePreview() {
   fetch('/data/kursvorschau.json')
@@ -497,16 +453,93 @@ function loadCoursePreview() {
         grid.innerHTML += `
           <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105 ">
             <h3 class="text-2xl font-semibold text-rose-800 mb-4">${card.headline}</h3>
-            <ul class="list-disc pl-5 mb-4">
-              ${card.courses.map(course => `<li>${course}</li>`).join('')}
+            <ul class="list-disc pl-3 mb-4"> ${card.courses.map(course => course.trim() === ""? `<li class="invisible">-</li>`: `<li>${course}</li>` ).join('')}
             </ul>
             <span class="block my-3">${card.duration}</span>
             <a href="${card.link}" class="inline-block mt-2 px-6 py-2 bg-rose-700 text-white rounded-lg"> ${card.buttonText}</a>
-
-
           </div>
         `;
       });
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von kursvorschau.json:', err);
     });
 }
-window.addEventListener('DOMContentLoaded', loadCoursePreview);
+
+// =====================================================
+// 10. WINDOW EVENTS
+// =====================================================
+
+function initWindowEvents() {
+  window.addEventListener('load', () => {
+    document.body.style.overflow = 'auto';
+    document.body.style.position = 'static';
+    document.body.style.width = 'auto';
+    setTimeout(() => {
+      window.scrollBy(0, 1);
+      window.scrollTo({ top: 64, behavior: 'instant' });
+    }, 100);
+  });
+}
+
+// =====================================================
+// 11. INITIALISIERUNG
+// =====================================================
+
+function initializeApp() {
+  // Mobile Menu
+  initMobileMenuEvents();
+  
+  // Modals
+  initImpressumModal();
+  initDatenschutzModal();
+  initGenericModals();
+  
+  // Navigation
+  initStartNavigationLinks();
+  
+  // Tab System
+  initTabButtons();
+  
+  // Slider
+  initAboutSlider();
+  initSimpleSlider(); // Fallback
+  
+  // Window Events
+  initWindowEvents();
+}
+
+// =====================================================
+// 12. DOCUMENT READY EVENT LISTENERS
+// =====================================================
+
+// Typewriter Effect
+document.addEventListener("DOMContentLoaded", function () {
+  initTypewriter();
+});
+
+// Legal Content
+document.addEventListener('DOMContentLoaded', () => {
+  loadLegalContent();
+});
+
+// Tab Initialization (mehrfach vorhanden - zusammengefasst)
+document.addEventListener('DOMContentLoaded', () => {
+  initializeTabFromURL();
+});
+
+// Info Modals
+document.addEventListener('DOMContentLoaded', loadInfoModals);
+
+// Course Preview
+document.addEventListener('DOMContentLoaded', loadCoursePreview);
+
+// =====================================================
+// 13. APP START
+// =====================================================
+
+// Hauptinitialisierung
+initializeApp();
+
+// Content laden
+loadCourseContent();

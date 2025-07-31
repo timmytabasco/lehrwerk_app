@@ -148,24 +148,23 @@
         </div>
       </div>
     </main>
-
     <!-- Kursvorschau -->
-   <section id="coursepreview" class="py-24 scroll-mt-24 lg:py-[10.25rem]">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl lg:text-4xl font-bold text-center text-neutral-800 mb-20">
-      Kursvorschau
-    </h2>
-    <div id="coursepreview-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      
-    </div>
-  </div>
-</section>
+    <section id="coursepreview" class="py-24 scroll-mt-24 lg:py-[10.25rem]">
+      <div class="container mx-auto px-4">
+      <h2 class="text-3xl lg:text-4xl font-bold text-center text-neutral-800 mb-20">
+        Kursvorschau
+      </h2>
+      <div id="coursepreview-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Wird per JS befüllt! -->
+      </div>
+      </div>
+    </section>
 
     <!-- Info-Grid mit 4 interaktiven Kacheln -->
     <section class="py-16 bg-neutral-50">
       <div class="container mx-auto px-4 text-center space-y-8">
       <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800 mb-20">Infos auf einen Blick</h2>
-      <div id="info-modals" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto text-left">
+      <div id="info-modals" class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
 
         <!-- Standort -->
         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
@@ -195,15 +194,15 @@
         <button data-modal-target="modal-material" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
         </div>
 
-         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
         <h3 class="text-xl font-semibold text-rose-800 mb-2">💲100% förderbar!</h3>
         <p>Mit Bildungsgutschein komplett förderbar.</p>
         <button data-modal-target="modal-foerderung" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
         </div>
 
-         <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
-        <h3 class="text-xl font-semibold text-rose-800 mb-2">📖 Abschlüsse auf einen Blick!</h3>
-        <p></p>
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition group">
+        <h3 class="text-xl font-semibold text-rose-800 mb-2">📖 Abschlüsse!</h3>
+        <p>Top-Zertifikate für Ihren beruflichen Neustart.</p>
         <button data-modal-target="modal-abschluss" class="mt-2 text-sm text-rose-700 hover:underline">Details</button>
         </div>
 
@@ -212,12 +211,12 @@
     </section>
 
     <!-- Modals -->
-   <div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-  <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
-    <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
-    <div class="modal-content"></div>
+    <div id="modal-standort" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
+      <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
+      <div class="modal-content"></div>
+      </div>
     </div>
-  </div>
 
     <div id="modal-pizzatag" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
@@ -240,20 +239,19 @@
       </div>
     </div>
 
-        <div id="modal-foerderung" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="modal-foerderung" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
       <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
       <div class="modal-content"></div>
       </div>
     </div>
 
-     <div id="modal-abschluss" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="modal-abschluss" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-md w-full p-6 relative">
       <button class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl close-modal">&times;</button>
       <div class="modal-content"></div>
       </div>
     </div>
-
 
     <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
       <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
@@ -268,17 +266,14 @@
 
     <div id="impressum-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-      <button id="close-impressum" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
+      <button id="close-impressum" class="absolute top-2 right-3 text-gray-600 hover:text-black text-6xl">&times;</button>
       <div class="content" id="impressum-box"></div>
       </div>
     </div>
 
     <div id="datenschutz-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-      <button id="close-datenschutz" class="absolute top-2 right-3 text-gray-600 hover:text-black text-xl">&times;</button>
+      <button id="close-datenschutz" class="absolute top-2 right-3 text-gray-600 hover:text-black text-6xl">&times;</button>
       <div class="content" id="datenschutz-box"></div>
       </div>
     </div>
-
-</body>
-</html>
