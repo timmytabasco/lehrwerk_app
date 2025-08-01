@@ -597,3 +597,38 @@ fetch('/data/überuns.json')
       });
     });
   });
+
+flatpickr("#datepicker", {
+  minDate: "today",
+  dateFormat: "Y-m-d",
+  onChange: function(selectedDates, dateStr) {
+    fetch('/api/appointments/available?date=' + dateStr)
+      .then(r => r.json())
+      .then(times => {
+        const sel = document.getElementById('time-select');
+        sel.innerHTML = '<option value="">Uhrzeit wählen</option>' +
+          times.map(t => `<option value="${t}">${t}</option>`).join('');
+      });
+  }
+});
+
+// Terminformular abschicken
+document.getElementById('appointment-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const form = e.target;
+  fetch('/api/appointments', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: form.name.value,
+      email: form.email.value,
+      date: form.date.value,
+      time: form.time.value
+    })
+  })
+  .then(res => res.json())
+  .then(result => {
+    if(result.success) alert('Termin erfolgreich gebucht!');
+    else alert('Fehler, Termin nicht möglich');
+  });
+});
