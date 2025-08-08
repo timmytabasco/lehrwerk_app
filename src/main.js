@@ -30,8 +30,7 @@ const detailBox = document.getElementById('detail-box');
 // 2. GLOBALE VARIABLEN
 // =====================================================
 
-let isMenuOpen = false;
-let contentMap = {};
+let isMenuOpen = false;         
 
 // =====================================================
 // 3. MOBILE MENU FUNKTIONEN
@@ -211,10 +210,20 @@ function initSpecializationButtons() {
       const key = btn.dataset.content;
       const course = contentMap[tab]?.[key];
 
-      // Inhalt aktualisieren
       detailBox.innerHTML = course
-        ? `<h2 class="text-xl font-bold mb-2">${course.title}</h2>${course.content}`
-        : '<p>Keine Informationen vorhanden.</p>';
+        ? `
+          <h2 class="text-2xl font-bold mb-4 text-red-700">${course.title}</h2>
+          <div class="space-y-5">
+            ${course.content
+              .replace(/<h3>/g, '<h3 class="font-semibold mt-6 mb-2 text-red-700 text-lg">')
+              .replace(/<ul>/g, '<ul class="list-disc list-inside mb-4">')
+              .replace(/<p>/g, '<p class="mb-4">')
+              .replace(/<p class="mb-2">/g, '<p class="mb-2">')
+              .replace(/<a /g, '<a class="underline text-blue-700" ')
+            }
+          </div>
+        `
+        : '<p class="text-gray-700">Keine Informationen vorhanden.</p>';
 
       // Alle Buttons zurücksetzen
       specButtons.forEach(b => {
@@ -229,6 +238,7 @@ function initSpecializationButtons() {
   });
 }
 
+
 function initializeTabFromURL() {
   const params = new URLSearchParams(window.location.search);
   const initialTab = params.get('tab');
@@ -240,72 +250,9 @@ function initializeTabFromURL() {
   }
 }
 
-// =====================================================
-// 6. SLIDER FUNKTIONEN
-// =====================================================
-
-function initAboutSlider() {
-  const slider = document.getElementById('about-slider');
-  if (!slider) return;
-
-  const slides = slider.querySelectorAll('.slide');
-  const progressBar = document.getElementById('slider-progress');
-  const nextBtn = document.getElementById('next-slide');
-  let current = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  function showSlide(idx) {
-    slides.forEach((s, i) => {
-      s.classList.toggle('hidden', i !== idx);
-    });
-    // Progress-Bar updaten
-    if (progressBar) {
-      const pct = ((idx + 1) / slides.length) * 100;
-      progressBar.style.width = pct + '%';
-    }
-  }
-
-  // Initial
-  showSlide(current);
-
-  // Swipe-Events (Mobil)
-  slider.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  });
-  slider.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchEndX < touchStartX - 40) current = (current + 1) % slides.length;
-    if (touchEndX > touchStartX + 40) current = (current - 1 + slides.length) % slides.length;
-    showSlide(current);
-  });
-
-  // Klick-Button (Desktop)
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      current = (current + 1) % slides.length;
-      showSlide(current);
-    });
-  }
-}
-
-// Fallback für den einfachen Slider (falls der obere nicht funktioniert)
-function initSimpleSlider() {
-  const slides = document.querySelectorAll('#about-slider .slide');
-  const nextBtn = document.getElementById('next-slide');
-  let current = 0;
-
-  if (slides.length > 0 && nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      slides[current].classList.add('hidden');
-      current = (current + 1) % slides.length;
-      slides[current].classList.remove('hidden');
-    });
-  }
-}
 
 // =====================================================
-// 7. NAVIGATION FUNKTIONEN
+// 6. NAVIGATION FUNKTIONEN
 // =====================================================
 
 function initStartNavigationLinks() {
@@ -350,18 +297,6 @@ function initTypewriter() {
 // =====================================================
 // 9. DATEN LADEN FUNKTIONEN
 // =====================================================
-
-function loadCourseContent() {
-  fetch('/data/kurse.json')
-    .then(res => res.json())
-    .then(data => {
-      contentMap = data;
-      initSpecializationButtons();
-    })
-    .catch(err => {
-      console.error('Fehler beim Laden von kurse.json:', err);
-    });
-}
 
 function loadLegalContent() {
   const impressumModal = document.getElementById('impressum-modal');
@@ -504,12 +439,6 @@ function initializeApp() {
   // Navigation
   initStartNavigationLinks();
   
-  // Tab System
-  initTabButtons();
-  
-  // Slider
-  initAboutSlider();
-  initSimpleSlider(); // Fallback
   
 if (isHomePage()) {
   initWindowEvents();
@@ -548,8 +477,6 @@ document.addEventListener('DOMContentLoaded', loadCoursePreview);
 // Hauptinitialisierung
 initializeApp();
 
-// Content laden
-loadCourseContent();
 
 fetch('/data/überuns.json')
   .then(res => res.json())
@@ -612,23 +539,3 @@ flatpickr("#datepicker", {
   }
 });
 
-// Terminformular abschicken
-document.getElementById('appointment-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const form = e.target;
-  fetch('/api/appointments', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      name: form.name.value,
-      email: form.email.value,
-      date: form.date.value,
-      time: form.time.value
-    })
-  })
-  .then(res => res.json())
-  .then(result => {
-    if(result.success) alert('Termin erfolgreich gebucht!');
-    else alert('Fehler, Termin nicht möglich');
-  });
-});
