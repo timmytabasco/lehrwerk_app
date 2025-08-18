@@ -1,7 +1,7 @@
 import './style.css'; // Importiere globale Styles (Tailwind CSS)
 
 // =====================================================
-// 1. DOM-ELEMENTE SELEKTIEREN
+// 1. DOM-ELEMENTE SELEKTIONEN
 // =====================================================
 
 // Mobile Menu Elemente
@@ -30,10 +30,19 @@ const detailBox = document.getElementById('detail-box');
 // 2. GLOBALE VARIABLEN
 // =====================================================
 
-let isMenuOpen = false;         
+let isMenuOpen = false;
 
 // =====================================================
-// 3. MOBILE MENU FUNKTIONEN
+// 3. UTILITY FUNKTIONEN
+// =====================================================
+
+function isHomePage() {
+  return window.location.pathname === '/' || 
+         window.location.pathname.endsWith('/index.html');
+}
+
+// =====================================================
+// 4. MOBILE MENU FUNKTIONEN
 // =====================================================
 
 function openMenu() {
@@ -45,12 +54,14 @@ function openMenu() {
   mobileOverlay.classList.add('opacity-100');
   mobileMenu.classList.remove('max-h-0');
   mobileMenu.style.maxHeight = 'calc(100vh - 11rem)';
+  
   menuItems.forEach((item, index) => {
     setTimeout(() => {
       item.classList.remove('opacity-0', 'translate-y-8', 'scale-90');
       item.classList.add('opacity-100', 'translate-y-0', 'scale-100');
     }, 150 + (index * 100));
   });
+  
   document.body.style.overflow = 'hidden';
   document.body.style.position = 'fixed';
   document.body.style.width = '100%';
@@ -63,10 +74,12 @@ function closeMenu() {
   hamburgerLine3.classList.remove('-rotate-45', '-translate-y-2');
   mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
   mobileOverlay.classList.remove('opacity-100');
+  
   menuItems.forEach(item => {
     item.classList.add('opacity-0', 'translate-y-8', 'scale-90');
     item.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
   });
+  
   mobileMenu.classList.add('max-h-0');
   mobileMenu.style.maxHeight = '0px';
   document.body.style.overflow = '';
@@ -110,7 +123,7 @@ function initMobileMenuEvents() {
 }
 
 // =====================================================
-// 4. MODAL FUNKTIONEN
+// 5. MODAL FUNKTIONEN
 // =====================================================
 
 function initImpressumModal() {
@@ -120,16 +133,19 @@ function initImpressumModal() {
       modal.classList.add('opacity-100');
       document.body.style.overflow = 'hidden';
     });
+    
     closeBtn.addEventListener('click', () => {
       modal.classList.add('hidden');
       modal.classList.remove('opacity-100');
       document.body.style.overflow = 'auto';
     });
+    
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         closeBtn.click();
       }
     });
+    
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.classList.contains('opacity-100')) {
         closeBtn.click();
@@ -146,6 +162,7 @@ function initDatenschutzModal() {
         datenschutzModal.classList.add('opacity-100');
       });
     });
+    
     closeDatenschutzBtn.addEventListener('click', () => {
       datenschutzModal.classList.remove('opacity-100');
       setTimeout(() => {
@@ -187,7 +204,7 @@ function initGenericModals() {
 }
 
 // =====================================================
-// 5. TAB SYSTEM FUNKTIONEN
+// 6. TAB SYSTEM FUNKTIONEN
 // =====================================================
 
 function initTabButtons() {
@@ -195,8 +212,10 @@ function initTabButtons() {
     button.addEventListener('click', () => {
       const target = button.dataset.tab;
       detailBox.innerHTML = '<p class="text-gray-700">Wähle eine Spezialisierung aus, um weitere Informationen anzuzeigen.</p>';
+      
       document.getElementById('fi-list').classList.toggle('hidden', target !== 'fi');
       document.getElementById('kfm-list').classList.toggle('hidden', target !== 'kfm');
+      
       tabButtons.forEach(btn => btn.classList.remove('bg-rose-700', 'text-white'));
       button.classList.add('bg-rose-700', 'text-white');
     });
@@ -238,7 +257,6 @@ function initSpecializationButtons() {
   });
 }
 
-
 function initializeTabFromURL() {
   const params = new URLSearchParams(window.location.search);
   const initialTab = params.get('tab');
@@ -250,16 +268,14 @@ function initializeTabFromURL() {
   }
 }
 
-
 // =====================================================
-// 6. NAVIGATION FUNKTIONEN
+// 7. NAVIGATION FUNKTIONEN
 // =====================================================
 
 function initStartNavigationLinks() {
   document.querySelectorAll('.nav-start').forEach(link => {
-    const isStartseite =
-      window.location.pathname === '/' ||
-      window.location.pathname.endsWith('/index.html');
+    const isStartseite = isHomePage();
+    
     if (isStartseite) {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -283,6 +299,7 @@ function initTypewriter() {
   if (target) {
     const text = "Mach den ersten Schritt in die Digitalisierung!👨‍💻";
     let index = 0;
+    
     function type() {
       if (index < text.length) {
         target.textContent += text.charAt(index);
@@ -290,6 +307,7 @@ function initTypewriter() {
         setTimeout(type, 30);
       }
     }
+    
     type();
   }
 }
@@ -383,15 +401,23 @@ function loadCoursePreview() {
     .then(data => {
       const grid = document.getElementById('coursepreview-grid');
       if (!grid) return;
+      
       grid.innerHTML = '';
       data.forEach(card => {
         grid.innerHTML += `
-          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105 ">
+          <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-rose-200 border border-rose-100 transition-transform hover:scale-105">
             <h3 class="text-2xl font-semibold text-rose-800 mb-4">${card.headline}</h3>
-            <ul class="list-disc pl-3 mb-4"> ${card.courses.map(course => course.trim() === ""? `<li class="invisible">-</li>`: `<li>${course}</li>` ).join('')}
+            <ul class="list-disc pl-3 mb-4">
+              ${card.courses.map(course => 
+                course.trim() === "" ? 
+                `<li class="invisible">-</li>` : 
+                `<li>${course}</li>`
+              ).join('')}
             </ul>
             <span class="block my-3">${card.duration}</span>
-            <a href="${card.link}" class="inline-block mt-2 px-6 py-2 bg-rose-700 text-white rounded-lg"> ${card.buttonText}</a>
+            <a href="${card.link}" class="inline-block mt-2 px-6 py-2 bg-rose-700 text-white rounded-lg">
+              ${card.buttonText}
+            </a>
           </div>
         `;
       });
@@ -401,8 +427,101 @@ function loadCoursePreview() {
     });
 }
 
+function loadAboutContent() {
+  fetch('/data/überuns.json')
+    .then(res => res.json())
+    .then(data => {
+      const aboutElement = document.getElementById('about-content');
+      if (aboutElement) {
+        aboutElement.innerHTML = `
+          <div class="${data.boxClass}">
+            <h2 class="${data.headlineClass}">${data.headline}</h2>
+            ${data.subheadline ? `<div class="${data.subheadlineClass}">${data.subheadline}</div>` : ''}
+            ${data.img ? `<img src="${data.img}" alt="Team" class="w-24 h-24 rounded-full mb-4 mx-auto" />` : ''}
+            <div class="${data.textClass}">${data.text}</div>
+          </div>
+        `;
+      }
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von überuns.json:', err);
+    });
+}
+
+function loadFAQContent() {
+  fetch('/data/faq.json')
+    .then(res => res.json())
+    .then(data => {
+      // Generiere HTML für alle FAQs mit Button für die Frage
+      const html = data.map((item, i) => `
+        <div class="mb-4 bg-white rounded-xl shadow">
+          <button
+            type="button"
+            class="w-full text-left text-xl font-semibold text-red-800 px-6 py-4 focus:outline-none flex justify-between items-center"
+            data-faq-toggle="${i}"
+          >
+            ${item.question}
+            <span class="ml-2 text-neutral-400 text-2xl">&#x25BC;</span>
+          </button>
+          <div
+            class="px-6 pb-4 pt-2 text-gray-800 hidden"
+            id="faq-answer-${i}"
+          >
+            ${item.answer}
+          </div>
+        </div>
+      `).join('');
+      
+      const faqElement = document.getElementById('faq-content');
+      if (faqElement) {
+        faqElement.innerHTML = html;
+      }
+
+      // Toggle-Logik: Antwort ein-/ausblenden
+      data.forEach((item, i) => {
+        const btn = document.querySelector(`[data-faq-toggle="${i}"]`);
+        const ans = document.getElementById(`faq-answer-${i}`);
+        if (btn && ans) {
+          btn.addEventListener('click', () => {
+            ans.classList.toggle('hidden');
+          });
+        }
+      });
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von faq.json:', err);
+    });
+}
+
 // =====================================================
-// 10. WINDOW EVENTS
+// 10. EXTERNE BIBLIOTHEKEN INITIALISIERUNG
+// =====================================================
+
+function initFlatpickr() {
+  if (typeof flatpickr !== 'undefined') {
+    flatpickr("#datepicker", {
+      minDate: "today",
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates, dateStr) {
+        fetch('/api/appointments/available?date=' + dateStr)
+          .then(r => r.json())
+          .then(times => {
+            const sel = document.getElementById('time-select');
+            if (sel) {
+              sel.innerHTML = '<option value="">Uhrzeit wählen</option>' +
+                times.map(t => `<option value="${t}">${t}</option>`).join('');
+            }
+          })
+          .catch(err => {
+            console.error('Fehler beim Laden der verfügbaren Zeiten:', err);
+          });
+      }
+    });
+  }
+}
+
+// =====================================================
+// 11. WINDOW EVENTS
 // =====================================================
 
 function initWindowEvents() {
@@ -410,6 +529,7 @@ function initWindowEvents() {
     document.body.style.overflow = 'auto';
     document.body.style.position = 'static';
     document.body.style.width = 'auto';
+    
     setTimeout(() => {
       window.scrollBy(0, 1);
       window.scrollTo({ top: 64, behavior: 'instant' });
@@ -417,125 +537,58 @@ function initWindowEvents() {
   });
 }
 
-function isHomePage() {
-  
-  return window.location.pathname === '/' ||
-         window.location.pathname.endsWith('/index.html');
-}
-
 // =====================================================
-// 11. INITIALISIERUNG
+// 12. HAUPTINITIALISIERUNG
 // =====================================================
 
 function initializeApp() {
-  // Mobile Menu
+  // Core Funktionalitäten
   initMobileMenuEvents();
-  
-  // Modals
   initImpressumModal();
   initDatenschutzModal();
   initGenericModals();
-  
-  // Navigation
   initStartNavigationLinks();
   
-  
-if (isHomePage()) {
-  initWindowEvents();
-}
-}
-
-// =====================================================
-// 12. DOCUMENT READY EVENT LISTENERS
-// =====================================================
-
-// Typewriter Effect
-document.addEventListener("DOMContentLoaded", function () {
-  initTypewriter();
-});
-
-// Legal Content
-document.addEventListener('DOMContentLoaded', () => {
-  loadLegalContent();
-});
-
-// Tab Initialization (mehrfach vorhanden - zusammengefasst)
-document.addEventListener('DOMContentLoaded', () => {
-  initializeTabFromURL();
-});
-
-// Info Modals
-document.addEventListener('DOMContentLoaded', loadInfoModals);
-
-// Course Preview
-document.addEventListener('DOMContentLoaded', loadCoursePreview);
-
-// =====================================================
-// 13. APP START
-// =====================================================
-
-// Hauptinitialisierung
-initializeApp();
-
-
-fetch('/data/überuns.json')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('about-content').innerHTML = `
-      <div class="${data.boxClass}">
-        <h2 class="${data.headlineClass}">${data.headline}</h2>
-        ${data.subheadline ? `<div class="${data.subheadlineClass}">${data.subheadline}</div>` : ''}
-        ${data.img ? `<img src="${data.img}" alt="Team" class="w-24 h-24 rounded-full mb-4 mx-auto" />` : ''}
-        <div class="${data.textClass}">${data.text}</div>
-      </div>
-    `;
-  });
-
- fetch('/data/faq.json')
-  .then(res => res.json())
-  .then(data => {
-    // Generiere HTML für alle FAQs mit Button für die Frage
-    const html = data.map((item, i) => `
-      <div class="mb-4 bg-white rounded-xl shadow">
-        <button
-          type="button"
-          class="w-full text-left text-xl font-semibold text-red-800 px-6 py-4 focus:outline-none flex justify-between items-center"
-          data-faq-toggle="${i}"
-        >
-          ${item.question}
-          <span class="ml-2 text-neutral-400 text-2xl">&#x25BC;</span>
-        </button>
-        <div
-          class="px-6 pb-4 pt-2 text-gray-800 hidden"
-          id="faq-answer-${i}"
-        >
-          ${item.answer}
-        </div>
-      </div>
-    `).join('');
-    document.getElementById('faq-content').innerHTML = html;
-
-    // Toggle-Logik: Antwort ein-/ausblenden
-    data.forEach((item, i) => {
-      const btn = document.querySelector(`[data-faq-toggle="${i}"]`);
-      const ans = document.getElementById(`faq-answer-${i}`);
-      btn.addEventListener('click', () => {
-        ans.classList.toggle('hidden');
-      });
-    });
-  });
-
-flatpickr("#datepicker", {
-  minDate: "today",
-  dateFormat: "Y-m-d",
-  onChange: function(selectedDates, dateStr) {
-    fetch('/api/appointments/available?date=' + dateStr)
-      .then(r => r.json())
-      .then(times => {
-        const sel = document.getElementById('time-select');
-        sel.innerHTML = '<option value="">Uhrzeit wählen</option>' +
-          times.map(t => `<option value="${t}">${t}</option>`).join('');
-      });
+  // Tab System (falls vorhanden)
+  if (tabButtons.length > 0) {
+    initTabButtons();
   }
+  
+  if (specButtons.length > 0) {
+    initSpecializationButtons();
+  }
+  
+  // Homepage spezifische Events
+  if (isHomePage()) {
+    initWindowEvents();
+  }
+  
+  // Externe Bibliotheken
+  initFlatpickr();
+}
+
+// =====================================================
+// 13. DOCUMENT READY EVENT LISTENERS
+// =====================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Spezialeffekte
+  initTypewriter();
+  
+  // Tab System
+  initializeTabFromURL();
+  
+  // Daten laden
+  loadLegalContent();
+  loadInfoModals();
+  loadCoursePreview();
+  loadAboutContent();
+  loadFAQContent();
 });
 
+// =====================================================
+// 14. APP START
+// =====================================================
+
+// Hauptinitialisierung starten
+initializeApp();

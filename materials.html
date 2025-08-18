@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lehrwerk | Kontakt</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <title>Lehrwerk | Lernmaterialien</title>
   <link rel="icon" type="image/svg+xml" href="/img/logo.png" />
   <link rel="stylesheet" href="/src/style.css" />
   <script type="module" src="/src/main.js"></script>
-  <script type="module" src="/src/appointments.js"></script>
-  <script type="module" src="/src/contacts.js"></script>
+  <script type="module" src="/src/materials.js" defer></script>
 </head>
 <body class="bg-neutral-50 text-gray-900 antialiased font-mono">
 
@@ -117,7 +114,7 @@
               </a>
             </li>
             <li class="menu-item opacity-0 translate-y-8 scale-90 transition-all duration-500 ease-out w-full">
-              <a href="/faq.html" class="mobile-nav-link block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
+              <a href="/faq.html" class="block text-center text-xl font-medium text-gray-300 hover:text-white py-4 px-6 rounded-xl hover:bg-stone-700/50 transition-all duration-300 transform hover:scale-105 hover:translate-x-2 border border-transparent shadow-xl hover:shadow-rose-800/20 group">
                 <span class="flex items-center justify-center space-x-3">
                   <span class="text-2xl group-hover:animate-bounce">❓</span>
                   <span>FAQ</span>
@@ -129,90 +126,21 @@
       </div>
     </nav>
   </header>
-  
-    <section class="container mx-auto px-4 py-12 max-w-3xl space-y-10">
-    <!-- Headline & Einleitung -->
-    <div class="text-center space-y-2">
-        <h1 class="text-3xl font-bold text-neutral-800">Kontakt & Beratung</h1>
-        <p class="text-neutral-700">Sie haben Fragen oder möchten einen persönlichen Beratungstermin vereinbaren? Wir sind gerne für Sie da!</p>
-    </div>
 
-    <!-- Kontaktformular -->
-    <form id="contact-form" class="bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-4">
-        <div>
-        <label for="name" class="block font-semibold mb-1">Name*</label>
-        <input type="text" id="name" name="name" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
-        </div>
-        <div>
-        <label for="email" class="block font-semibold mb-1">E-Mail*</label>
-        <input type="email" id="email" name="email" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
-        </div>
-        <div>
-        <label for="phone" class="block font-semibold mb-1">Telefon</label>
-        <input type="tel" id="phone" name="phone" class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
-        </div>
-        <div>
-        <label for="message" class="block font-semibold mb-1">Ihr Anliegen*</label>
-        <textarea id="message" name="message" rows="3" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700"></textarea>
-        </div>
-        <div class="text-sm text-neutral-500">
-        Mit dem Absenden des Formulars akzeptieren Sie unsere <a href="/datenschutz.html" class="underline text-blue-700">Datenschutzerklärung</a>.
-        </div>
-        <button type="submit" class="w-full bg-red-700 text-white font-bold py-2 rounded hover:bg-red-800 transition">Absenden</button>
-    </form>
-   <div id="contact-message" class="hidden text-sm font-semibold mt-2"></div>
-<div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-4">
-  <h2 class="text-2xl font-bold text-red-700 mb-2">Beratungstermin buchen</h2>
-  <form id="appointment-form" class="space-y-4">
-    <div>
-      <label for="appointment-name" class="block font-semibold mb-1">Name*</label>
-      <input type="text" id="appointment-name" name="name" required class="w-full border border-neutral-300 rounded p-2" />
-    </div>
-    <div>
-      <label for="appointment-email" class="block font-semibold mb-1">E-Mail*</label>
-      <input type="email" id="appointment-email" name="email" required class="w-full border border-neutral-300 rounded p-2" />
-    </div>
-    <div>
-      <label for="datepicker" class="block font-semibold mb-1">Datum wählen*</label>
-      <input type="text" id="datepicker" name="date" required class="w-full border border-neutral-300 rounded p-2" placeholder="Datum auswählen" />
-    </div>
-    <div>
-      <label for="time-select" class="block font-semibold mb-1">Uhrzeit wählen*</label>
-      <select id="time-select" name="time" required class="w-full border border-neutral-300 rounded p-2">
-        <option value="">Uhrzeit wählen</option>
-        <!-- Optionen werden per JS nach Auswahl des Datums gefüllt -->
-      </select>
-    </div>
-    <button type="submit" class="w-full bg-red-700 text-white font-bold py-2 rounded hover:bg-red-800 transition">Termin anfragen</button>
-  </form>
-  <div id="appointment-message" class="hidden text-sm font-semibold mt-2"></div>
-  <div class="text-neutral-500 text-sm mt-2">
-    Ihr Wunschtermin ist nicht verfügbar? Schreiben Sie uns über das Kontaktformular – wir finden gemeinsam eine Lösung!
-  </div>
-</div>
+<main class="container mx-auto px-4 py-12">
+    <header class="mb-8">
+      <h1 class="text-3xl lg:text-4xl font-bold text-neutral-800">Lernmaterialien</h1>
+      <p class="mt-2 text-sm text-neutral-600">
+        Hier findest du alle freigeschalteten Materialien zu deinem Kurs.
+      </p>
+    </header>
 
+    <div id="materials-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-    <!-- Kontaktinfos, Öffnungszeiten, Adresse -->
-    <div class="bg-neutral-100 rounded-xl p-6 shadow space-y-2 text-center text-neutral-800">
-        <div><strong>Adresse:</strong> Trautenaustraße 10, 38114 Braunschweig</div>
-        <div><strong>Telefon:</strong> <a href="tel:053159063100" class="text-red-700 underline">0531 590 631 00</a></div>
-        <div><strong>E-Mail:</strong> <a href="mailto:kontakt@lehrwerk.de" class="text-red-700 underline">kontakt@lehrwerk.de</a></div>
-        <div><strong>Öffnungszeiten:</strong> Mo–Fr 08:00–16:00 Uhr</div>
-    </div>
-
-    <!-- Anfahrt / Karte -->
-    <div class="w-full rounded-xl overflow-hidden shadow-lg">
-    <iframe class='w-full h-64 my-5 rounded-lg shadow' src='https://maps.google.com/maps?q=Lehrwerk%20GmbH%20Braunschweig&t=&z=15&ie=UTF8&iwloc=&output=embed' loading='lazy'></iframe>
-    </div>
-
-
-
-    <!-- FAQ-Quicklink -->
-    <div class="text-center mt-8">
-        <a href="/faq.html" class="inline-block underline text-red-400 text-lg font-semibold hover:text-red-700">Schau auch in unsere FAQ!</a>
-    </div>
-    </section>
-
+    <p id="materials-empty" class="hidden mt-8 text-sm text-neutral-600">
+      Keine Materialien gefunden.
+    </p>
+  </main>
 
 <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
       <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
