@@ -254,15 +254,28 @@
     </div>
 
     <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
-      <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
-      <p>&copy; 2025 Lehrwerk GmbH</p>
-      <div class="flex flex-wrap justify-center space-x-4">
+  <div class="container mx-auto px-4 flex flex-col items-center gap-1 text-center">
+    <p class="leading-none">© 2025 Lehrwerk GmbH</p>
+
+    <div class="grid w-full grid-cols-3  items-center">
+      <div></div>
+
+      <div class="justify-self-center flex items-center gap-4 leading-none">
         <button id="open-impressum" class="hover:text-red-500 transition">Impressum</button>
-        <span class="block">|</span>
+        <span class="hidden sm:inline">|</span>
         <button id="open-datenschutz" class="hover:text-red-500 transition">Datenschutz</button>
       </div>
+
+      <div class="justify-self-end">
+        <button id="btn-materials"
+                class="rounded-lg bg-rose-700 px-4 py-2 text-white hover:bg-rose-800">
+          Lernmaterial
+        </button>
       </div>
-    </footer>
+    </div>
+  </div>
+</footer>
+
 
     <div id="impressum-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
       <div class="bg-white text-gray-900 rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
@@ -277,3 +290,19 @@
       <div class="content" id="datenschutz-box"></div>
       </div>
     </div>
+
+ <!-- Lernmaterial-Modal -->
+<div id="materials-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50">
+  <div class="w-full max-w-sm rounded-xl bg-white p-6 shadow-lg">
+    <h3 class="mb-3 text-lg font-semibold">Zugangscode eingeben</h3>
+    <form id="materials-form" class="space-y-4">
+      <input id="materials-code-input" type="password" required
+             class="w-full rounded-lg border px-3 py-2" placeholder="Code" />
+      <div class="flex justify-end gap-3">
+        <button type="button" id="materials-cancel" class="px-3 py-2 rounded-lg border">Abbrechen</button>
+        <button type="submit" class="px-4 py-2 rounded-lg bg-rose-700 text-white">Weiter</button>
+      </div>
+      <p id="materials-error" class="hidden text-sm text-rose-700">Falscher Code.</p>
+    </form>
+  </div>
+</div>

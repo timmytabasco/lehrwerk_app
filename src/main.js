@@ -592,3 +592,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Hauptinitialisierung starten
 initializeApp();
+
+
+// Lernmaterial-Modal – eigene Variablenamen
+const btnMaterials      = document.querySelector('#btn-materials');
+const materialsModal    = document.querySelector('#materials-modal');
+const materialsForm     = document.querySelector('#materials-form');
+const materialsInput    = document.querySelector('#materials-code-input');
+const materialsCancel   = document.querySelector('#materials-cancel');
+const materialsError    = document.querySelector('#materials-error');
+
+const MATERIALS_CODE = 'LEHRWERK2025'; // deinen Code hier
+
+function openMaterialsModal() {
+  materialsModal.classList.remove('hidden');
+  materialsModal.classList.add('flex');
+  materialsError.classList.add('hidden');
+  materialsInput.value = '';
+  setTimeout(() => materialsInput.focus(), 50);
+}
+function closeMaterialsModal() {
+  materialsModal.classList.add('hidden');
+  materialsModal.classList.remove('flex');
+}
+
+btnMaterials?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openMaterialsModal();
+});
+materialsCancel?.addEventListener('click', closeMaterialsModal);
+materialsModal?.addEventListener('click', (e) => {
+  if (e.target === materialsModal) closeMaterialsModal(); // Overlay-Klick
+});
+materialsForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const code = materialsInput.value.trim();
+  if (code === MATERIALS_CODE) {
+    sessionStorage.setItem('materials_ok', '1');
+    sessionStorage.setItem('materials_code', code);
+    window.location.href = '/materials.html';
+  } else {
+    materialsError.classList.remove('hidden');
+  }
+});
+
+if (window.location.pathname.endsWith('/materials.html')) {
+  const ok = sessionStorage.getItem('materials_ok') === '1';
+  if (!ok) {
+    window.location.href = '/#materials-locked';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') materialsModal && materialsModal.classList.add('hidden');
+});
+
+materialsInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') materialsForm.requestSubmit();
+});
+
