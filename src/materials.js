@@ -1,7 +1,4 @@
-// materials.js – komplette Frontend-Logik für die Lernmaterialien
-
 // ====== API-Basis ======
-// <VPS-IP> durch deine Server-IP ersetzen (z. B. "203.0.113.42")
 const API_BASE = 'http://178.254.25.12:3000';
 
 // ====== DOM ======
