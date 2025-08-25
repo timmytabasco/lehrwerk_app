@@ -377,23 +377,61 @@ function loadInfoModals() {
   fetch('/data/modals.json')
     .then(res => res.json())
     .then(data => {
-      Object.entries(data).forEach(([modalId, modalContent]) => {
-        const modalElem = document.getElementById('modal-' + modalId);
-        if (modalElem) {
-          const contentBox = modalElem.querySelector('.modal-content');
-          if (contentBox) {
-            contentBox.innerHTML = `
-              <h2 class="text-xl font-bold mb-4">${modalContent.title}</h2>
-              ${modalContent.html}
-            `;
+      const grid = document.getElementById("info-modals");
+      const modalRoot = document.getElementById("modals-root");
+
+      Object.entries(data).forEach(([id, item]) => {
+        // --- Grid-Karte ---
+        const card = document.createElement("div");
+        card.className = "bg-white p-6 rounded-xl shadow hover:shadow-lg transition group";
+        card.innerHTML = `
+          <h3 class="text-xl font-semibold text-rose-800 mb-2">${item.icon} ${item.title}</h3>
+          <p class="mb-2">${item.teaser}</p>
+          <button data-modal-target="modal-${id}" class="mt-2 text-sm text-rose-700 hover:underline">
+            ${item.linkText}
+          </button>
+        `;
+        grid.appendChild(card);
+
+        // --- Modal ---
+        const modal = document.createElement("div");
+        modal.id = "modal-" + id;
+        modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden opacity-0 pointer-events-none transition";
+        modal.innerHTML = `
+          <div class="bg-white rounded-xl shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-3 right-3 text-gray-500 close-modal">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">${item.title}</h2>
+            <div class="modal-content">${item.content}</div>
+          </div>
+        `;
+        modalRoot.appendChild(modal);
+      });
+
+      // --- Event Listener für Öffnen ---
+      document.querySelectorAll("[data-modal-target]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = document.getElementById(btn.dataset.modalTarget);
+          if (target) {
+            target.classList.remove("hidden", "opacity-0", "pointer-events-none");
+            target.classList.add("opacity-100");
           }
-        }
+        });
+      });
+
+      // --- Event Listener für Schließen ---
+      document.querySelectorAll(".close-modal").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const modal = btn.closest(".fixed");
+          if (modal) {
+            modal.classList.add("opacity-0", "pointer-events-none");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+          }
+        });
       });
     })
-    .catch(err => {
-      console.error('Fehler beim Laden von modals.json:', err);
-    });
+    .catch(err => console.error("Fehler beim Laden von modals.json:", err));
 }
+
 
 function loadCoursePreview() {
   fetch('/data/kursvorschau.json')
@@ -426,6 +464,8 @@ function loadCoursePreview() {
       console.error('Fehler beim Laden von kursvorschau.json:', err);
     });
 }
+
+
 
 function loadAboutContent() {
   fetch('/data/überuns.json')
@@ -624,17 +664,31 @@ materialsCancel?.addEventListener('click', closeMaterialsModal);
 materialsModal?.addEventListener('click', (e) => {
   if (e.target === materialsModal) closeMaterialsModal(); // Overlay-Klick
 });
-materialsForm?.addEventListener('submit', (e) => {
+
+materialsForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const code = materialsInput.value.trim();
-  if (code === MATERIALS_CODE) {
-    sessionStorage.setItem('materials_ok', '1');
-    sessionStorage.setItem('materials_code', code);
-    window.location.href = '/materials.html';
-  } else {
+
+  try {
+    const res = await fetch('/api/materials-auth/check-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      sessionStorage.setItem('materials_ok', '1');
+      window.location.href = '/materials.html';
+    } else {
+      materialsError.classList.remove('hidden');
+    }
+  } catch (err) {
+    console.error('Fehler bei Auth:', err);
     materialsError.classList.remove('hidden');
   }
 });
+
 
 if (window.location.pathname.endsWith('/materials.html')) {
   const ok = sessionStorage.getItem('materials_ok') === '1';

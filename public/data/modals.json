@@ -1,32 +1,31 @@
 {
-  "standort": {
-    "title": "Standort, Anfahrt & Parkplätze",
-    "teaser": "Trautenaustraße 10<br>38114 Braunschweig",
-    "html": "<div class='mb-1'><span class='font-semibold'>Adresse:</span><br>Trautenaustraße 10<br>38114 Braunschweig</div><iframe class='w-full h-64 my-5 rounded-lg shadow' src='https://maps.google.com/maps?q=Lehrwerk%20GmbH%20Braunschweig&t=&z=15&ie=UTF8&iwloc=&output=embed' loading='lazy'></iframe><div class='my-3'><span class='font-semibold'>ÖPNV:</span><br>🚌 <span class='font-semibold'>Bus 416</span> (Varrentrappstraße)<br>🚌 <span class='font-semibold'>Bus 422</span> (Ausstiegstraße)</div><div class='mb-2'><span class='font-semibold'>Parken:</span><br>🅿️ Kostenlose Parkplätze direkt hinter dem Haus</div>"
-  },
   "pizzatag": {
+    "icon": "🍕",
     "title": "Pizzatag",
     "teaser": "Jeden letzten Freitag im Monat – für Austausch & gute Laune!",
-    "html": "<p>Jeden letzten Freitag im Monat laden wir alle Teilnehmer und Dozenten zum gemeinsamen Pizzaessen ein.<br>So stärken wir das Miteinander und fördern informellen Austausch.</p><div class='mt-4'><span class='font-semibold'>🍕 Kostenlos für alle Teilnehmenden!</span></div>"
+    "linkText": "Mehr dazu",
+    "content": "<p>Jeden letzten Freitag im Monat laden wir alle Teilnehmer und Dozenten zum gemeinsamen Pizzaessen ein.<br>So stärken wir das Miteinander und fördern informellen Austausch.</p><div class='mt-4'><span class='font-semibold'>🍕 Kostenlos für alle Teilnehmenden!</span></div>"
   },
-  "zeiten": {
-    "title": "Öffnungszeiten",
-    "teaser": "Montag – Freitag<br>08:00 – 16:00 Uhr",
-    "html": "<p>Unser Standort ist <span class='font-semibold'>Montag bis Freitag von 08:00 bis 16:00 Uhr</span> für Sie geöffnet.<br>Beratungstermine können individuell vereinbart werden.</p><div class='mt-3'><span class='font-semibold'>📚 Lernmaterial:</span> Bücher, Blöcke und Taschenrechner werden kostenlos gestellt.</div>"
-  },
+
   "material": {
+    "icon": "📓",
     "title": "Lernmaterial & Ausstattung",
     "teaser": "Alle Lernmaterialien sind inklusive – Sie müssen nichts extra kaufen.",
-    "html": "<p>Alle Teilnehmenden erhalten von uns kostenlos sämtliche benötigten Lernmaterialien: Bücher, Blöcke, Schreibutensilien und einen Taschenrechner. Sie müssen sich um nichts kümmern – so können Sie sich voll und ganz auf die Umschulung konzentrieren.</p><p class='mt-3'>Bei Bedarf stellen wir auch Leih-Laptops zur Verfügung. Sprechen Sie uns einfach an!</p>"
+    "linkText": "Details",
+    "content": "<p>Alle Teilnehmenden erhalten von uns kostenlos sämtliche benötigten Lernmaterialien: Bücher, Blöcke, Schreibutensilien und einen Taschenrechner. Sie müssen sich um nichts kümmern – so können Sie sich voll und ganz auf die Umschulung konzentrieren.</p><p class='mt-3'>Bei Bedarf stellen wir auch Leih-Laptops zur Verfügung. Sprechen Sie uns einfach an!</p>"
   },
   "foerderung": {
+    "icon": "💲",
     "title": "Förderung & Bildungsgutschein",
-    "teaser": "100 % förderbar mit Bildungsgutschein der Agentur für Arbeit.",
-    "html": "<p>Unsere Umschulungen und Weiterbildungen sind zu 100 % durch einen Bildungsgutschein der Agentur für Arbeit oder des Jobcenters förderbar. Sprechen Sie mit Ihrem Ansprechpartner bei der Agentur – wir helfen gern weiter!</p><p class='mt-3'>Auch andere Fördermöglichkeiten (z. B. Rentenversicherung, Bundeswehr) sind möglich.</p>"
+    "teaser": "100 % förderbar mit Bildungsgutschein der Agentur für Arbeit.",
+    "linkText": "Details",
+    "content": "<p>Unsere Umschulungen und Weiterbildungen sind zu 100 % durch einen Bildungsgutschein der Agentur für Arbeit oder des Jobcenters förderbar. Sprechen Sie mit Ihrem Ansprechpartner bei der Agentur – wir helfen gern weiter!</p><p class='mt-3'>Auch andere Fördermöglichkeiten (z. B. Rentenversicherung, Bundeswehr) sind möglich.</p>"
   },
   "abschluss": {
+    "icon": "📖",
     "title": "Abschlüsse & Zertifikate",
     "teaser": "Anerkannte Abschlüsse: IHK, Microsoft & mehr.",
-    "html": "<ul class='mb-3'><li>✅ IHK-Abschluss Fachinformatiker/-in</li><li>✅ Microsoft-Zertifizierung</li><li>✅ LPIC/MTA (je nach Kurs)</li><li>✅ MS Office Specialist</li><li>✅ Teilnahmebescheinigung Lehrwerk GmbH</li></ul><p>Unsere Abschlüsse sind bundesweit anerkannt und steigern Ihre Chancen auf dem Arbeitsmarkt.</p>"
+    "linkText": "Details",
+    "content": "<ul class='mb-3'><li>✅ IHK-Abschluss Fachinformatiker/-in</li><li>✅ Microsoft-Zertifizierung</li><li>✅ LPIC/MTA (je nach Kurs)</li><li>✅ MS Office Specialist</li><li>✅ Teilnahmebescheinigung Lehrwerk GmbH</li></ul><p>Unsere Abschlüsse sind bundesweit anerkannt und steigern Ihre Chancen auf dem Arbeitsmarkt.</p>"
   }
 }

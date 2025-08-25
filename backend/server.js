@@ -5,10 +5,11 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
-import coursesRouter from './routes/courses.js';
 import contactRouter from './routes/contacts.js';
 import appointmentRouter from './routes/appointments.js';
 import materialsRouter from './routes/materials.js';
+import materialsAuthRouter from './routes/materialsAuth.js';
+
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,8 @@ console.log('🔗 Static /materials ->', filesDir);
 
 // Dateien im Browser ansehen:
 app.use('/materials', express.static(filesDir, { fallthrough: false }));
+app.use('/api/materials-auth', materialsAuthRouter);
+
 
 // === Download-Route: erzwingt "Speichern unter" ===
 app.get('/dl/:name', (req, res) => {
@@ -41,7 +44,7 @@ app.get('/dl/:name', (req, res) => {
 });
 
 // === API-Routen ===
-app.use('/api/courses', coursesRouter);
+
 app.use('/api/contact', contactRouter);
 app.use('/api/appointments', appointmentRouter);
 app.use('/api/materials', materialsRouter);

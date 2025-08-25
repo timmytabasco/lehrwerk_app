@@ -39,6 +39,7 @@
     "cssesc": "^3.0.0",
     "didyoumean": "^1.2.2",
     "dlv": "^1.1.3",
+    "dotenv": "^17.2.1",
     "eastasianwidth": "^0.2.0",
     "electron-to-chromium": "^1.5.189",
     "emoji-regex": "^9.2.2",
