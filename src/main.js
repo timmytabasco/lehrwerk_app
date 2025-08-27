@@ -399,7 +399,7 @@ function loadInfoModals() {
         modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden opacity-0 pointer-events-none transition";
         modal.innerHTML = `
           <div class="bg-white rounded-xl shadow-lg max-w-lg w-full p-6 relative">
-            <button class="absolute top-3 right-3 text-gray-500 close-modal">&times;</button>
+            <button class="text-5xl absolute top-3 right-3 text-gray-500 close-modal">&times;</button>
             <h2 class="text-2xl font-bold mb-4">${item.title}</h2>
             <div class="modal-content">${item.content}</div>
           </div>
@@ -468,14 +468,14 @@ function loadCoursePreview() {
 
 
 function loadAboutContent() {
-  fetch('/data/überuns.json')
+  fetch('/data/ueberuns.json')
     .then(res => res.json())
     .then(data => {
       const aboutElement = document.getElementById('about-content');
       if (aboutElement) {
         aboutElement.innerHTML = `
           <div class="${data.boxClass}">
-            <h2 class="${data.headlineClass}">${data.headline}</h2>
+            <h1 class="${data.headlineClass}">${data.headline}</h1>
             ${data.subheadline ? `<div class="${data.subheadlineClass}">${data.subheadline}</div>` : ''}
             ${data.img ? `<img src="${data.img}" alt="Team" class="w-24 h-24 rounded-full mb-4 mx-auto" />` : ''}
             <div class="${data.textClass}">${data.text}</div>

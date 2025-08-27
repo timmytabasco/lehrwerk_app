@@ -26,7 +26,7 @@
           </span>
         </a>
         <!-- Hamburger Button -->
-        <button id="hamburger" class="lg:hidden text-neutral-50 w-10 h-10 flex flex-col justify-center items-center focus:outline-none focus:ring-2 focus:ring-neutal-500 focus:ring-opacity-50 rounded-lg transition-all duration-200 hover:bg-neutral-500 hover:scale-110 group">
+        <button id="hamburger" class="lg:hidden text-neutral-50 w-10 h-10 flex flex-col justify-center items-center focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-opacity-50 rounded-lg transition-all duration-200 hover:bg-neutral-500 hover:scale-110 group">
           <div class="space-y-1.5">
             <div id="hamburger-line-1" class="w-6 h-0.5 bg-white transition-all duration-300 group-hover:bg-rose-900"></div>
             <div id="hamburger-line-2" class="w-6 h-0.5 bg-white transition-all duration-300 group-hover:bg-rose-900"></div>
@@ -130,7 +130,7 @@
     </nav>
   </header>
   
-    <section class="container mx-auto px-4 py-12 max-w-3xl space-y-10">
+    <section class="container mx-auto px-4 py-12 max-w-4xl space-y-10">
     <!-- Headline & Einleitung -->
     <div class="text-center space-y-2">
         <h1 class="text-3xl font-bold text-neutral-800">Kontakt & Beratung</h1>
@@ -141,37 +141,42 @@
     <form id="contact-form" class="bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-4">
         <div>
         <label for="name" class="block font-semibold mb-1">Name*</label>
-        <input type="text" id="name" name="name" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
+        <input type="text" id="name" name="name" autocomplete="name" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
         </div>
         <div>
         <label for="email" class="block font-semibold mb-1">E-Mail*</label>
-        <input type="email" id="email" name="email" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
+        <input type="email" id="email" name="email" autocomplete="email" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
         </div>
         <div>
         <label for="phone" class="block font-semibold mb-1">Telefon</label>
-        <input type="tel" id="phone" name="phone" class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
+        <input type="tel" id="phone" name="phone" autocomplete="phone" class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700" />
         </div>
         <div>
         <label for="message" class="block font-semibold mb-1">Ihr Anliegen*</label>
         <textarea id="message" name="message" rows="3" required class="w-full border border-neutral-300 rounded p-2 focus:ring-2 focus:ring-red-700"></textarea>
         </div>
+        <input type="text" name="hp" id="hp-contact" class="hidden" tabindex="-1" autocomplete="off" />
+        <input type="hidden" name="ts" id="ts-contact" />
         <div class="text-sm text-neutral-500">
         Mit dem Absenden des Formulars akzeptieren Sie unsere <a href="/datenschutz.html" class="underline text-blue-700">Datenschutzerklärung</a>.
         </div>
         <button type="submit" class="w-full bg-red-700 text-white font-bold py-2 rounded hover:bg-red-800 transition">Absenden</button>
     </form>
+
    <div id="contact-message" class="hidden text-sm font-semibold mt-2"></div>
 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-4">
   <h2 class="text-2xl font-bold text-red-700 mb-2">Beratungstermin buchen</h2>
   <form id="appointment-form" class="space-y-4">
     <div>
       <label for="appointment-name" class="block font-semibold mb-1">Name*</label>
-      <input type="text" id="appointment-name" name="name" required class="w-full border border-neutral-300 rounded p-2" />
+      <input type="text" id="appointment-name" name="name" autocomplete="name" required class="w-full border border-neutral-300 rounded p-2" />
     </div>
     <div>
       <label for="appointment-email" class="block font-semibold mb-1">E-Mail*</label>
-      <input type="email" id="appointment-email" name="email" required class="w-full border border-neutral-300 rounded p-2" />
+      <input type="email" id="appointment-email" name="email" autocomplete="email" required class="w-full border border-neutral-300 rounded p-2" />
     </div>
+    <input type="text" name="hp" id="hp-appointment" class="hidden" tabindex="-1" autocomplete="off" />
+    <input type="hidden" name="ts" id="ts-appointment" />
     <div>
       <label for="datepicker" class="block font-semibold mb-1">Datum wählen*</label>
       <input type="text" id="datepicker" name="date" required class="w-full border border-neutral-300 rounded p-2" placeholder="Datum auswählen" />
@@ -185,6 +190,8 @@
     </div>
     <button type="submit" class="w-full bg-red-700 text-white font-bold py-2 rounded hover:bg-red-800 transition">Termin anfragen</button>
   </form>
+
+
   <div id="appointment-message" class="hidden text-sm font-semibold mt-2"></div>
   <div class="text-neutral-500 text-sm mt-2">
     Ihr Wunschtermin ist nicht verfügbar? Schreiben Sie uns über das Kontaktformular – wir finden gemeinsam eine Lösung!
