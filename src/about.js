@@ -1,4 +1,27 @@
 // ---------- AWARDS (Slider + Lightbox) ----------
+
+function loadAboutContent() {
+  fetch('/data/ueberuns.json')
+    .then(res => res.json())
+    .then(data => {
+      const aboutElement = document.getElementById('about-content');
+      if (aboutElement) {
+        aboutElement.innerHTML = `
+          <div class="${data.boxClass}">
+            <h1 class="${data.headlineClass}">${data.headline}</h1>
+            ${data.subheadline ? `<div class="${data.subheadlineClass}">${data.subheadline}</div>` : ''}
+            ${data.img ? `<img src="${data.img}" alt="Team" class="w-24 h-24 rounded-full mb-4 mx-auto" />` : ''}
+            <div class="${data.textClass}">${data.text}</div>
+          </div>
+        `;
+      }
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden von überuns.json:', err);
+    });
+}
+loadAboutContent();
+
 async function renderAwards() {
   const slider = document.getElementById('awards-slider');
   const arrowLeft = document.getElementById('arrow-left');

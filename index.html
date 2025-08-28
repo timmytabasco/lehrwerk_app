@@ -160,7 +160,7 @@
       </div>
     </section>
 
-  <section class="py-16 bg-neutral-50">
+  <section class="py-32 bg-neutral-50">
   <div class="container mx-auto px-4 text-center space-y-8">
     <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800 mb-20">Infos auf einen Blick</h2>
 
@@ -171,31 +171,41 @@
   </div>
 </section>
 
+<!-- Call to Action: Lernmaterialien -->
+<section class="min-h-[80vh] py-20 bg-gradient-to-r from-neutral-50 to-red-50">
+  <div class="mt-32 mx-auto px-4 text-center space-y-10">
+    <h2 class="text-3xl lg:text-4xl font-bold text-neutral-800">
+      Exklusive Lernmaterialien  
+      <span class="block text-xl text-rose-700 ">Zugang nur mit deinem Teilnehmer-Code</span>
+    </h2>
+
+    <button id="btn-materials"
+      class="w-full max-w-2xl mx-auto block px-8 py-5 text-xl font-semibold rounded-2xl 
+             bg-rose-700 text-white shadow-lg 
+             hover:bg-rose-800 transition">
+      🔒 Lernmaterialien aufrufen
+    </button>
+
+    <p class="text-stone-500 text-sm">
+      Hinweis: Lernmaterialien sind nur für angemeldete Teilnehmer mit Zugangscode verfügbar.
+    </p>
+  </div>
+</section>
+
+
 <!-- Modals-Container (außerhalb des Grids, direkt im Body/Section) -->
 <div id="modals-root"></div>
 
-    <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
-  <div class="container mx-auto px-4 flex flex-col items-center gap-1 text-center">
-    <p class="leading-none">© 2025 Lehrwerk GmbH</p>
-
-    <div class="grid w-full grid-cols-3  items-center">
-      <div></div>
-
-      <div class="justify-self-center flex items-center gap-4 leading-none">
+   <footer class="bg-neutral-400 text-red-900 text-sm py-4 mt-20">
+      <div class="container mx-auto px-4 flex flex-col items-center space-y-2 text-center">
+      <p>&copy; 2025 Lehrwerk GmbH</p>
+      <div class="flex flex-wrap justify-center space-x-4">
         <button id="open-impressum" class="hover:text-red-500 transition">Impressum</button>
-        <span class="hidden sm:inline">|</span>
+        <span class="block">|</span>
         <button id="open-datenschutz" class="hover:text-red-500 transition">Datenschutz</button>
       </div>
-
-      <div class="justify-self-end">
-        <button id="btn-materials"
-                class="rounded-lg bg-rose-700 px-4 py-2 text-white hover:bg-rose-800">
-          Lernmaterial
-        </button>
       </div>
-    </div>
-  </div>
-</footer>
+    </footer>
 
 
     <div id="impressum-modal" class="fixed inset-0 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
