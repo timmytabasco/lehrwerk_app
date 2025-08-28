@@ -1,6 +1,8 @@
 // backend/server.js
 import express from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -10,13 +12,24 @@ import contactRouter from './routes/contacts.js';
 import appointmentRouter from './routes/appointments.js';
 import materialsRouter from './routes/materials.js';
 import materialsAuthRouter from './routes/materialsAuth.js';
+import authRouter from './routes/auth.js';
+import cmsContentRouter from './routes/cmsContent.js';
+import cmsMaterialsRouter from './routes/cmsMaterials.js';
+
 import spamGuard from './middleware/spamGuard.js';
 
 const app = express();
 
 // ——— Basics
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  credentials: true
+}));
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(helmet());
+
 
 // (optional) wenn hinter Proxy/Reverse-Proxy (Nginx) → echte IPs fürs Rate-Limit
 app.set('trust proxy', 1);
@@ -92,8 +105,20 @@ app.use(
 // (andere APIs unverändert)
 app.use('/api/materials', materialsRouter);
 
+// CMS/Auth
+app.use('/api/auth', authRouter);
+app.use('/api/cms/content', cmsContentRouter);
+app.use('/api/cms/materials', cmsMaterialsRouter);
+
+
 // ——— Start (extern erreichbar)
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ API läuft auf http://0.0.0.0:${PORT}`);
 });
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ ok: false, message: 'Server error' });
+});
+

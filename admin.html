@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lehrwerk CMS</title>
+  <link href="style.css" rel="stylesheet" />
+  <script defer type="module" src="admin.js"></script>
+</head>
+<body class="bg-neutral-100 min-h-screen">
+  <main class="container mx-auto px-4 py-12 space-y-10">
+    <h1 class="text-3xl font-bold text-center">Lehrwerk CMS</h1>
+
+    <!-- Login -->
+    <section id="login-section" class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+      <h2 class="text-xl font-semibold">Login</h2>
+      <input id="login-email" type="email" class="border rounded p-3 w-full" placeholder="Email" />
+      <input id="login-pass" type="password" class="border rounded p-3 w-full" placeholder="Passwort" />
+      <button id="btn-login" class="w-full px-5 py-3 bg-rose-700 text-white rounded-xl font-semibold hover:bg-rose-800">
+        Einloggen
+      </button>
+      <p id="login-msg" class="text-sm text-stone-500"></p>
+    </section>
+
+    <!-- Content Editor -->
+    <section id="content-section" class="hidden max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+      <h2 class="text-xl font-semibold">Content bearbeiten</h2>
+      <div class="flex flex-wrap gap-3 items-center">
+        <select id="content-select" class="border rounded p-2">
+          <option value="faq.json">faq.json</option>
+          <option value="kurse.json">kurse.json</option>
+          <option value="kursvorschau.json">kursvorschau.json</option>
+          <option value="modals.json">modals.json</option>
+          <option value="rechtliches.json">rechtliches.json</option>
+          <option value="ueberuns.json">ueberuns.json</option>
+        </select>
+        <button id="btn-load" class="px-4 py-2 bg-neutral-800 text-white rounded">Laden</button>
+        <button id="btn-save" class="px-4 py-2 bg-rose-700 text-white rounded">Speichern</button>
+        <span id="content-msg" class="text-sm text-stone-500"></span>
+      </div>
+      <textarea id="content-area" class="w-full h-[50vh] border rounded p-3 font-mono text-sm" spellcheck="false"></textarea>
+    </section>
+  </main>
+</body>
+</html>
