@@ -5,7 +5,9 @@ function showApp() {
   $('#login-section')?.classList.add('hidden');
   $('#content-section')?.classList.remove('hidden');
   $('#materials-section')?.classList.remove('hidden');
-  $('#btn-logout')?.classList.remove('hidden');
+  $('#btn-logout')?.classList.remove('hidden')
+  $('#images-section')?.classList.remove('hidden')
+  wireImagesUI(); renderImages();; 
 }
 
 function showLogin() {
@@ -13,6 +15,7 @@ function showLogin() {
   $('#materials-section')?.classList.add('hidden');
   $('#login-section')?.classList.remove('hidden');
   $('#btn-logout')?.classList.add('hidden');
+  $('#images-section')?.classList.add('hidden'); 
 }
 
 // zentraler Fetch-Wrapper: inkl. Cookies & 401-Handling
@@ -289,6 +292,128 @@ function escapeHtml(s) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
   }[m]));
 }
+
+
+// ---- Bilder-Management ----
+// Einheitliche, eindeutige Funktionen (keine Duplikate!)
+
+async function uploadImage(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  const r = await fetch('/api/images', { method: 'POST', body: fd });
+  if (!r.ok) throw new Error('Upload fehlgeschlagen');
+  return r.json(); // { filename, url }
+}
+
+async function fetchImages() {
+  const r = await fetch('/api/images');
+  if (!r.ok) throw new Error('Liste fehlgeschlagen');
+  return r.json(); // [{filename, url}, ...]
+}
+
+async function deleteImage(filename) {
+  const r = await fetch(`/api/images/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+  if (!r.ok) throw new Error('Löschen fehlgeschlagen');
+  return r.json();
+}
+
+async function renderImages() {
+  const container = document.querySelector('#images-list');
+  if (!container) return; // falls der Bereich auf der Seite nicht existiert
+
+  container.innerHTML = "<p class='col-span-full text-sm text-stone-500'>Lade…</p>";
+
+  try {
+    const imgs = await fetchImages();
+    if (!Array.isArray(imgs) || imgs.length === 0) {
+      container.innerHTML = "<p class='col-span-full text-sm text-stone-500'>Keine Bilder vorhanden</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+    imgs.forEach(img => {
+      const card = document.createElement('div');
+      card.className = "relative bg-white rounded-xl shadow p-2 flex flex-col items-center";
+
+      const image = document.createElement('img');
+      image.src = img.url;
+      image.alt = img.filename;
+      image.className = "w-full h-32 object-contain mb-2";
+
+      const name = document.createElement('div');
+      name.textContent = img.filename;
+      name.className = "text-xs text-stone-500 mb-2 break-all text-center";
+
+      const btn = document.createElement('button');
+      btn.textContent = "Löschen";
+      btn.className = "px-2 py-1 text-sm bg-rose-600 text-white rounded hover:bg-rose-700";
+      btn.onclick = async () => {
+        if (confirm(`Bild ${img.filename} wirklich löschen?`)) {
+          btn.disabled = true;
+          btn.textContent = 'Lösche…';
+          try {
+            await deleteImage(img.filename);
+            await renderImages();
+          } catch (e) {
+            alert(e.message || 'Löschen fehlgeschlagen');
+          }
+        }
+      };
+
+      card.appendChild(image);
+      card.appendChild(name);
+      card.appendChild(btn);
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = "<p class='col-span-full text-sm text-rose-600'>Fehler beim Laden</p>";
+    console.error(err);
+  }
+}
+
+// UI verkabeln (IDs müssen zu deinem admin.html passen)
+function wireImagesUI() {
+  // **Formular**-Upload (empfohlen)
+  const form = document.querySelector('#img-upload-form');
+  const fileInput = document.querySelector('#img-file');
+  if (form && fileInput) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) return;
+      try {
+        await uploadImage(file);
+        fileInput.value = "";
+        await renderImages();
+      } catch (e) {
+        alert(e.message || 'Upload fehlgeschlagen');
+      }
+    });
+  }
+
+  // **Refresh**-Button
+  const btnRefresh = document.querySelector('#btn-refresh-imgs');
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', renderImages);
+  }
+}
+
+// Beim Login anzeigen + einmal laden
+(function hookImagesIntoApp() {
+  const _showApp = showApp;
+  window.showApp = function () {
+    _showApp();
+    // Bereich einblenden (falls dein showApp das nicht schon macht)
+    document.querySelector('#images-section')?.classList.remove('hidden');
+    renderImages();
+  };
+
+  const _showLogin = showLogin;
+  window.showLogin = function () {
+    _showLogin();
+    document.querySelector('#images-section')?.classList.add('hidden');
+  };
+})();
 
 // ---- Autostart: prüfen, ob Session schon aktiv ist ----
 (async () => {

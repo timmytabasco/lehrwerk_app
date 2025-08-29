@@ -11,27 +11,27 @@
 
 "rooms": [
     {
-      "src": "public/img/beispiel1.jpg",
+      "src": "backend/storage/images/beispiel1.jpg",
       "alt": "Schulungsraum mit PCs"
     },
     {
-      "src": "public/img/beispiel2.jpg",
+      "src": "backend/storage/images/beispiel6.jpg",
       "alt": "Seminarraum mit Beamer"
     },
     {
-      "src": "public/img/beispiel3.jpg",
+      "src": "backend/storage/images/beispiel2.jpg",
       "alt": "Besprechungsraum"
     },
     {
-      "src": "public/img/beispiel4.jpg",
+      "src": "backend/storage/images/beispiel3.jpg",
       "alt": "Schulungsraum mit PCs"
     },
     {
-      "src": "public/img/beispiel5.jpg",
+      "src": "backend/storage/images/beispiel4.jpg",
       "alt": "Seminarraum mit Beamer"
     },
     {
-      "src": "public/img/beispiel6.jpg",
+      "src": "backend/storage/images/beispiel5.jpg",
       "alt": "Besprechungsraum"
     }
   ],
@@ -41,34 +41,26 @@
       "title": "Auszeichnung",
       "issuer": "IHK Braunschweig",
       "year": 2021, 
-      "image": { "src": "public/img/auszeichnung.png", "alt": "Auszeichnung der IHK Braunschweig" }
+      "image": { "src": "backend/storage/images/auszeichnung.png", "alt": "Auszeichnung der IHK Braunschweig" }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "public/img/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": { "src": "backend/storage/images/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "public/img/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": { "src": "backend/storage/images/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "public/img/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
-    },
-    {
-      "title": "Auszeichnung 2",
-      "issuer": "IHK Braunschweig",
-      "year": 2022,
-      "image": { "src": "public/img/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": { "src": "backend/storage/images/auszeichnung.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
     }
-
-
   ]
 }
 

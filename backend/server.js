@@ -15,6 +15,9 @@ import materialsAuthRouter from './routes/materialsAuth.js';
 import authRouter from './routes/auth.js';
 import cmsContentRouter from './routes/cmsContent.js';
 import cmsMaterialsRouter from './routes/cmsMaterials.js';
+import imagesRouter from './routes/images.js';
+
+
 
 import spamGuard from './middleware/spamGuard.js';
 
@@ -28,6 +31,7 @@ const ALLOWED = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://178.25
   .map(s => s.trim());
 
 app.use(cors({
+
   origin: (origin, cb) => {
     // allow non-browser clients (curl = origin null) und definierte Origins
     if (!origin) return cb(null, true);
@@ -190,6 +194,9 @@ app.use(
   },
   appointmentRouter
 );
+// Bilder bearbeiten 
+app.use('/api/images', imagesRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'storage', 'images')));
 
 // Materialien (offene Liste)
 app.use('/api/materials', materialsRouter);
