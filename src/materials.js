@@ -1,5 +1,3 @@
-// materials.js
-
 // ====== DOM ======
 const listEl  = document.querySelector('#materials-list');
 const emptyEl = document.querySelector('#materials-empty');
@@ -23,58 +21,40 @@ function niceFileName(title, original) {
   return hasExt ? t + original.slice(original.lastIndexOf('.')) : t;
 }
 
-/**
- * Mappt DB-Pfade auf eine öffentlich abrufbare URL unter /storage/...
- * - HTTP(S) bleibt unverändert (externe Ressourcen)
- * - Pfade wie "materials/a.pdf" -> "/storage/materials/a.pdf"
- * - Pfade wie "/storage/materials/a.pdf" -> bleiben so
- */
 function toStorageUrl(pathFromDb) {
   if (!pathFromDb) return '#';
   if (/^https?:\/\//i.test(pathFromDb)) return pathFromDb;
-
-  // führende ./ oder / entfernen
   let p = String(pathFromDb).replace(/^\.?\/*/, '');
-  // wenn noch kein "storage/" Prefix, ergänzen
-  if (!p.startsWith('storage/')) {
-    p = 'storage/' + p;
-  }
+  if (!p.startsWith('storage/')) p = 'storage/' + p;
   return '/' + p;
 }
 
-/**
- * Download-Link: nur der Basename wird an /dl/:name gehängt.
- * Achtung: Server erlaubt bewusst NUR sichere Basenames.
- */
 function toDownloadUrl(pathFromDb) {
   const base = getBaseName(pathFromDb);
   if (!base) return '#';
   return `/dl/${encodeURIComponent(base)}`;
 }
 
-// Optionale kleine Icon-Auswahl nach Dateiendung (nur visuell)
 function fileBadge(ext) {
   const map = {
-    pdf: '📄',
-    doc: '📝',
-    docx: '📝',
-    xls: '📊',
-    xlsx: '📊',
-    ppt: '📈',
-    pptx: '📈',
+    pdf: '📄', doc: '📝', docx: '📝',
+    xls: '📊', xlsx: '📊',
+    ppt: '📈', pptx: '📈',
     txt: '🧾',
-    jpg: '🖼️',
-    jpeg: '🖼️',
-    png: '🖼️',
-    gif: '🖼️',
-    webp: '🖼️',
-    mp4: '🎞️',
-    mp3: '🎧',
-    wav: '🎧',
-    zip: '🗜️',
-    rar: '🗜️'
+    jpg: '🖼️', jpeg: '🖼️', png: '🖼️', gif: '🖼️', webp: '🖼️',
+    mp4: '🎞️', mp3: '🎧', wav: '🎧',
+    zip: '🗜️', rar: '🗜️'
   };
   return map[ext] || '📦';
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
 // ====== Template ======
@@ -86,62 +66,52 @@ function cardTpl(m) {
   const dlName    = niceFileName(title, getBaseName(original));
   const ext       = getExt(original);
   const badge     = fileBadge(ext);
-
   const safeTitle = escapeHtml(title);
 
-  return `
-    <article class="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm hover:shadow-md transition">
-      <h2 class="text-lg font-semibold text-neutral-900 line-clamp-2 flex items-center gap-2">
-        <span>${badge}</span>
-        <span title="${safeTitle}">${safeTitle}</span>
-      </h2>
+  const courseInfo = m.course_name
+    ? escapeHtml(m.course_name)
+    : (m.course_id ? `Kurs-ID ${m.course_id}` : 'Kein Kurs');
 
-      <div class="mt-4 flex items-center gap-3">
-        <!-- Download (erzwingt Speichern) -->
+  return `
+    <article class="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-neutral-900 line-clamp-2 flex items-center gap-2">
+          <span>${badge}</span>
+          <span title="${safeTitle}">${safeTitle}</span>
+        </h2>
+        <div class="text-sm text-stone-500 mt-1">
+          ${courseInfo} • ${ext ? ext.toUpperCase() : 'Datei'}
+        </div>
+        ${m.created_at 
+          ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(m.created_at).toLocaleString('de-DE')}</div>`
+          : ''
+        }
+      </div>
+
+      <div class="flex gap-3 mt-3">
         <a href="${hrefDl}" download="${dlName}"
            class="rounded-lg bg-rose-700 px-4 py-2 text-sm text-white hover:bg-rose-800">
           Download
         </a>
-
-        <!-- Anzeigen (im neuen Tab öffnen) -->
         <a href="${hrefView}" target="_blank" rel="noopener"
            class="rounded-lg border px-4 py-2 text-sm hover:bg-neutral-50">
           Öffnen
         </a>
       </div>
-
-      <p class="mt-3 text-xs text-neutral-500 break-all">
-        ${ext ? ext.toUpperCase() + ' · ' : ''}${getBaseName(original) || 'ohne Dateiname'}
-      </p>
     </article>
   `;
-}
-
-// Einfache HTML-Escape, damit Titel nicht als HTML interpretiert werden
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
 }
 
 // ====== Daten laden & rendern ======
 async function loadMaterials() {
   if (!listEl) return;
-
-  // Optional: kleines Skelett während des Ladens
   listEl.innerHTML = skeletonCards(6);
 
   try {
     const res = await fetch('/api/materials', { credentials: 'include' });
-    console.log('[materials] status', res.status);
     if (!res.ok) throw new Error('HTTP ' + res.status);
 
     const body = await res.json();
-    console.log('[materials] json', body);
-
     const items = Array.isArray(body)
       ? body
       : Array.isArray(body.items)
@@ -171,7 +141,7 @@ async function loadMaterials() {
   }
 }
 
-// Kleines Lade-Skelett
+// ====== Skeleton ======
 function skeletonCards(n = 3) {
   return Array.from({ length: n }).map(() => `
     <article class="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm animate-pulse">

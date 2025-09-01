@@ -4,18 +4,26 @@ import db from '../db.js';
 
 const router = express.Router();
 
-router.get('/', async (_req, res) => {
-  console.log('GET /api/materials');
+// Beispiel: öffentliche Materials-Route
+router.get('/', async (req, res, next) => {
   try {
     const [rows] = await db.query(`
-      SELECT id, course_id, title, path
-      FROM materials
-      ORDER BY id DESC
+      SELECT 
+        m.id,
+        m.title,
+        m.path,
+        m.created_at,
+        m.course_id,
+        c.name AS course_name
+      FROM materials m
+      LEFT JOIN courses c ON m.course_id = c.id
+      ORDER BY m.created_at DESC
     `);
-    res.json(rows);
+
+    res.json({ ok: true, items: rows });
   } catch (err) {
-    console.error('Database error:', err);
-    res.status(500).json({ error: 'Fehler beim Laden der Materialien' });
+    console.error('Error loading public materials:', err);
+    next(err);
   }
 });
 

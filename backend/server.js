@@ -16,6 +16,7 @@ import authRouter from './routes/auth.js';
 import cmsContentRouter from './routes/cmsContent.js';
 import cmsMaterialsRouter from './routes/cmsMaterials.js';
 import imagesRouter from './routes/images.js';
+import coursesRouter from './routes/courses.js';
 
 
 
@@ -208,6 +209,7 @@ app.use('/api/materials-auth', materialsAuthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/cms/content', cmsContentRouter);
 app.use('/api/cms/materials', cmsMaterialsRouter);
+app.use('/api/courses', coursesRouter);
 
 /* ------------------------------ Public-Fallback ----------------------------- */
 

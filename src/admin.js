@@ -5,8 +5,9 @@ function showApp() {
   $('#login-section')?.classList.add('hidden');
   $('#content-section')?.classList.remove('hidden');
   $('#materials-section')?.classList.remove('hidden');
-  $('#btn-logout')?.classList.remove('hidden')
-  $('#images-section')?.classList.remove('hidden')
+  $('#btn-logout')?.classList.remove('hidden');
+  $('#images-section')?.classList.remove('hidden');
+  $('#pwd-section')?.classList.remove('hidden'); 
   wireImagesUI(); renderImages();; 
 }
 
@@ -16,6 +17,7 @@ function showLogin() {
   $('#login-section')?.classList.remove('hidden');
   $('#btn-logout')?.classList.add('hidden');
   $('#images-section')?.classList.add('hidden'); 
+  $('#pwd-section')?.classList.add('hidden'); 
 }
 
 // zentraler Fetch-Wrapper: inkl. Cookies & 401-Handling
@@ -48,6 +50,7 @@ $('#btn-login')?.addEventListener('click', async () => {
   $('#login-msg').textContent = j.ok ? 'Erfolgreich eingeloggt.' : (j.message || 'Fehler');
   if (j.ok) {
     showApp();
+    loadCourses();
     loadMaterials();
   }
 });
@@ -149,48 +152,54 @@ async function loadMaterials() {
   }
 
   box.innerHTML = j.items.map(item => {
-    const storageUrl = toStorageUrl(item.path);
-    const downloadUrl = toDownloadUrl(item.path);
-    const downloadName = niceFileName(item.title, item.path);
-    const fileExt = item.path ? item.path.split('.').pop()?.toLowerCase() || '' : '';
-    
-    return `
-      <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b last:border-b-0">
-        <div class="flex-1">
-          <div class="font-semibold text-gray-900">${escapeHtml(item.title)}</div>
-          <div class="text-sm text-stone-500 mt-1">
-            Course: ${item.course_id} • 
-            ${fileExt ? fileExt.toUpperCase() + ' • ' : ''}
-            ${item.path ? item.path.split('/').pop() : 'Unbekannt'}
-          </div>
-          ${item.created_at ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(item.created_at).toLocaleString('de-DE')}</div>` : ''}
+  const storageUrl   = toStorageUrl(item.path);
+  const downloadUrl  = toDownloadUrl(item.path);
+  const downloadName = niceFileName(item.title, item.path);
+  const fileExt      = item.path ? item.path.split('.').pop()?.toLowerCase() || '' : '';
+
+  // Kursname oder Fallback
+  const courseInfo = item.course_name 
+    ? escapeHtml(item.course_name) 
+    : 'Kein Kurs';
+
+  return `
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b last:border-b-0">
+      <div class="flex-1">
+        <div class="font-semibold text-gray-900">${escapeHtml(item.title)}</div>
+        <div class="text-sm text-stone-500 mt-1">
+          ${courseInfo} • ${fileExt ? fileExt.toUpperCase() : ''}
         </div>
-        
-        <div class="flex items-center gap-2 flex-shrink-0">
-          <!-- Anzeigen -->
-          <a href="${storageUrl}" 
-             target="_blank" 
-             rel="noopener"
-             class="px-3 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-sm">
-            Öffnen
-          </a>
-          
-          <!-- Download -->
-          <a href="${downloadUrl}" 
-             download="${downloadName}"
-             class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-            Download
-          </a>
-          
-          <!-- Löschen -->
-          <button data-id="${item.id}" 
-                  class="btn-del px-3 py-1 bg-rose-600 text-white rounded hover:bg-rose-700 text-sm">
-            Löschen
-          </button>
-        </div>
+        ${item.created_at 
+          ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(item.created_at).toLocaleString('de-DE')}</div>` 
+          : ''}
       </div>
-    `;
-  }).join('');
+      
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <!-- Anzeigen -->
+        <a href="${storageUrl}" 
+           target="_blank" 
+           rel="noopener"
+           class="px-3 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-sm">
+          Öffnen
+        </a>
+        
+        <!-- Download -->
+        <a href="${downloadUrl}" 
+           download="${downloadName}"
+           class="px-3 py-1 bg-rose-700 text-white rounded hover:bg-rose-800 text-sm">
+          Download
+        </a>
+        
+        <!-- Löschen -->
+        <button data-id="${item.id}" 
+                class="btn-del px-3 py-1 bg-rose-600 text-white rounded hover:bg-rose-700 text-sm">
+          Löschen
+        </button>
+      </div>
+    </div>
+  `;
+}).join('');
+
 
   // Event-Listener für Löschen-Buttons
   box.querySelectorAll('.btn-del').forEach(b => {
@@ -223,55 +232,33 @@ $('#btn-refresh-mats')?.addEventListener('click', loadMaterials);
 $('#upload-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
-  const courseId = $('#mat-course').value.trim();
+  const courseId = $('#mat-course').value.trim(); // darf leer sein
   const title = $('#mat-title').value.trim();
   const fileInput = $('#mat-file');
   const file = fileInput.files[0];
   
-  // Validierung
-  if (!courseId) {
-    alert('Bitte Course-ID eingeben');
-    return;
-  }
-  
-  if (!title) {
-    alert('Bitte Titel eingeben');
-    return;
-  }
-  
-  if (!file) {
-    alert('Bitte Datei auswählen');
-    return;
-  }
+  // Validierung (Kurs NICHT mehr Pflicht)
+  if (!title)  return alert('Bitte Titel eingeben');
+  if (!file)   return alert('Bitte Datei auswählen');
 
-  // FormData für Upload erstellen
   const formData = new FormData();
-  formData.append('course_id', courseId);
+  if (courseId) formData.append('course_id', courseId); // nur mitsenden, wenn gewählt
   formData.append('title', title);
   formData.append('file', file);
 
-  // Upload-Button deaktivieren
   const submitBtn = e.target.querySelector('button[type="submit"]') || e.target.querySelector('button');
   const originalText = submitBtn.textContent;
   submitBtn.textContent = 'Uploade...';
   submitBtn.disabled = true;
 
   try {
-    const j = await APIJson('/api/cms/materials', { 
-      method: 'POST', 
-      body: formData 
-    });
-
+    const j = await APIJson('/api/cms/materials', { method: 'POST', body: formData });
     if (j.ok) {
       // Formular zurücksetzen
       $('#mat-course').value = '';
       $('#mat-title').value = '';
       fileInput.value = '';
-      
-      // Erfolgsmeldung
       alert('Material erfolgreich hochgeladen!');
-      
-      // Liste neu laden
       loadMaterials();
     } else {
       alert(j.message || 'Upload fehlgeschlagen');
@@ -280,11 +267,64 @@ $('#upload-form')?.addEventListener('submit', async (e) => {
     console.error('Upload error:', err);
     alert('Upload fehlgeschlagen: ' + err.message);
   } finally {
-    // Button wieder aktivieren
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
   }
 });
+
+
+
+// Passwort ändern
+$('#btn-pwd')?.addEventListener('click', async () => {
+  const cur  = $('#pwd-current')?.value || '';
+  const nxt  = $('#pwd-next')?.value || '';
+  const nxt2 = $('#pwd-next2')?.value || '';
+  const msg  = $('#pwd-msg');
+  const say = (t, cls='text-sm text-stone-500') => { msg.textContent = t; msg.className = cls; };
+
+  // einfache Validierung
+  if (!cur || !nxt || !nxt2) return say('Bitte alle Felder ausfüllen.', 'text-sm text-rose-600');
+  if (nxt !== nxt2)          return say('Neues Passwort stimmt nicht überein.', 'text-sm text-rose-600');
+  if (nxt.length < 8)        return say('Neues Passwort zu kurz (min. 8 Zeichen).', 'text-sm text-rose-600');
+
+  // Button während des Requests deaktivieren
+  const btn = $('#btn-pwd');
+  const btnLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Ändere…';
+
+  try {
+    say('Sende …');
+    const r = await fetch('/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ current: cur, next: nxt })
+    });
+
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) {
+      // bevorzugt Server-Meldung anzeigen
+      return say(j.message || `Fehler (${r.status})`, 'text-sm text-rose-600');
+    }
+
+    say('Passwort geändert. Bitte neu einloggen.', 'text-sm text-green-700');
+
+    // Felder leeren
+    $('#pwd-current').value = '';
+    $('#pwd-next').value = '';
+    $('#pwd-next2').value = '';
+
+    // Session beenden & zurück zum Login
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    showLogin();
+  } catch (e) {
+    say('Serverfehler beim Ändern.', 'text-sm text-rose-600');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = btnLabel;
+  }
+});
+
 
 // ---- XSS-Helper ----
 function escapeHtml(s) {
@@ -371,6 +411,35 @@ async function renderImages() {
   }
 }
 
+// ---- Kurse laden ----
+async function loadCourses() {
+  const select = $('#mat-course');
+  if (!select) return;
+
+  // Platzhalter leeren + Standardoption
+  select.innerHTML = '<option value="">– bitte wählen –</option>';
+
+  try {
+    const j = await APIJson('/api/courses');
+    if (!j.ok || !Array.isArray(j.items) || j.items.length === 0) {
+      select.innerHTML += '<option disabled>— keine Kurse gefunden —</option>';
+      return;
+    }
+
+    j.items.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    console.error('Fehler beim Laden der Kurse:', err);
+    select.innerHTML += '<option disabled>— Fehler beim Laden —</option>';
+  }
+}
+
+
+
 // UI verkabeln (IDs müssen zu deinem admin.html passen)
 function wireImagesUI() {
   // **Formular**-Upload (empfohlen)
@@ -415,13 +484,16 @@ function wireImagesUI() {
   };
 })();
 
-// ---- Autostart: prüfen, ob Session schon aktiv ist ----
+// ---- Autostart: Session prüfen ----
 (async () => {
   try {
-    const j = await APIJson('/api/cms/materials'); // 200 wenn Cookie gültig
-    if (j.ok) { 
+    const r = await fetch('/api/auth/me', { credentials: 'include' });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.ok) { 
       showApp(); 
-      loadMaterials(); 
+      loadCourses();
+      loadMaterials?.();        // falls vorhanden
+      renderImages?.();         // falls vorhanden
     } else { 
       showLogin(); 
     }
