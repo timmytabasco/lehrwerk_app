@@ -7,9 +7,7 @@
   "headlineClass": "text-3xl md:text-4xl font-bold mb-2 text-red-800 text-center",
   "subheadlineClass": "underline text-lg md:text-xl text-neutral-700 mb-4 text-center",
   "textClass": "text-base md:text-lg text-justify leading-relaxed",
-
-
-"rooms": [
+  "rooms": [
     {
       "src": "backend/storage/images/beispiel1.jpg",
       "alt": "Schulungsraum mit PCs"
@@ -35,32 +33,42 @@
       "alt": "Besprechungsraum"
     }
   ],
-
-"awards": [
+  "awards": [
     {
       "title": "Auszeichnung",
       "issuer": "IHK Braunschweig",
-      "year": 2021, 
-      "image": { "src": "backend/storage/images/auszeichnung.png", "alt": "Auszeichnung der IHK Braunschweig" }
+      "year": 2021,
+      "image": {
+        "src": "backend/storage/images/auszeichnung.png",
+        "alt": "Auszeichnung der IHK Braunschweig"
+      }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "backend/storage/images/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": {
+        "src": "backend/storage/images/auszeichnung2.png",
+        "alt": "Auszeichnung 2 der IHK Braunschweig"
+      }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "backend/storage/images/auszeichnung2.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": {
+        "src": "backend/storage/images/auszeichnung2.png",
+        "alt": "Auszeichnung 2 der IHK Braunschweig"
+      }
     },
     {
       "title": "Auszeichnung 2",
       "issuer": "IHK Braunschweig",
       "year": 2022,
-      "image": { "src": "backend/storage/images/auszeichnung.png", "alt": "Auszeichnung 2 der IHK Braunschweig" }
+      "image": {
+        "src": "backend/storage/images/auszeichnung.png",
+        "alt": "Auszeichnung 2 der IHK Braunschweig"
+      }
     }
   ]
 }
-

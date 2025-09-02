@@ -1,5 +1,10 @@
+// =========================
+// admin.js (CMS)
+// =========================
+
 // ---- Helpers ----
 const $ = (s) => document.querySelector(s);
+const PAGE_SIZE = 10; // Pager-Größe für CMS-Listen
 
 function showApp() {
   $('#login-section')?.classList.add('hidden');
@@ -7,8 +12,11 @@ function showApp() {
   $('#materials-section')?.classList.remove('hidden');
   $('#btn-logout')?.classList.remove('hidden');
   $('#images-section')?.classList.remove('hidden');
-  $('#pwd-section')?.classList.remove('hidden'); 
-  wireImagesUI(); renderImages();; 
+  $('#pwd-section')?.classList.remove('hidden');
+  $('#contacts-section')?.classList.remove('hidden');
+  $('#appointments-section')?.classList.remove('hidden');
+  wireImagesUI(); 
+  renderImages();
 }
 
 function showLogin() {
@@ -16,15 +24,17 @@ function showLogin() {
   $('#materials-section')?.classList.add('hidden');
   $('#login-section')?.classList.remove('hidden');
   $('#btn-logout')?.classList.add('hidden');
-  $('#images-section')?.classList.add('hidden'); 
-  $('#pwd-section')?.classList.add('hidden'); 
+  $('#images-section')?.classList.add('hidden');
+  $('#pwd-section')?.classList.add('hidden');
+  $('#contacts-section')?.classList.add('hidden');
+  $('#appointments-section')?.classList.add('hidden');
 }
 
 // zentraler Fetch-Wrapper: inkl. Cookies & 401-Handling
 async function APIJson(url, opt = {}) {
   const r = await fetch(url, {
-     credentials: 'include',
-    ...opt 
+    credentials: 'include',
+    ...opt
   });
   if (r.status === 401) {
     // Session ungültig -> UI sperren
@@ -52,6 +62,8 @@ $('#btn-login')?.addEventListener('click', async () => {
     showApp();
     loadCourses();
     loadMaterials();
+    loadContacts();
+    loadAppointments();
   }
 });
 
@@ -65,7 +77,7 @@ $('#btn-logout')?.addEventListener('click', async () => {
 $('#btn-load')?.addEventListener('click', async () => {
   const name = $('#content-select').value;
   const j = await APIJson('/api/cms/content/' + encodeURIComponent(name))
-              .catch(err => ({ ok: false, message: String(err) }));
+    .catch(err => ({ ok: false, message: String(err) }));
   if (j.ok) {
     $('#content-area').value = JSON.stringify(j.data, null, 2);
     $('#content-msg').textContent = 'Geladen';
@@ -103,7 +115,6 @@ $('#btn-save')?.addEventListener('click', async () => {
 function toStorageUrl(pathFromDb) {
   if (!pathFromDb) return '#';
   if (/^https?:\/\//i.test(pathFromDb)) return pathFromDb;
-  
   let cleanPath = pathFromDb.replace(/^\.?\/*/, '');
   if (!cleanPath.startsWith('storage/')) {
     cleanPath = 'storage/' + cleanPath;
@@ -125,7 +136,10 @@ function toDownloadUrl(pathFromDb) {
  * Generiert schönen Download-Namen aus Titel
  */
 function niceFileName(title, originalPath) {
-  const cleanTitle = (title || 'material').trim().replace(/[^a-zA-Z0-9äöüÄÖÜß\s-]/g, '').replace(/\s+/g, '_');
+  const cleanTitle = (title || 'material')
+    .trim()
+    .replace(/[^a-zA-Z0-9äöüÄÖÜß\s-]/g, '')
+    .replace(/\s+/g, '_');
   const basename = originalPath ? originalPath.split('/').pop() : '';
   const ext = basename.includes('.') ? basename.split('.').pop() : '';
   return ext ? `${cleanTitle}.${ext}` : cleanTitle;
@@ -139,7 +153,7 @@ async function loadMaterials() {
   box.innerHTML = '<p class="text-stone-500">Lade Materialien...</p>';
 
   const j = await APIJson('/api/cms/materials')
-              .catch(err => ({ ok: false, message: String(err) }));
+    .catch(err => ({ ok: false, message: String(err) }));
 
   if (!j.ok || !Array.isArray(j.items)) {
     box.innerHTML = '<p class="text-red-500">Fehler beim Laden der Materialien</p>';
@@ -152,69 +166,68 @@ async function loadMaterials() {
   }
 
   box.innerHTML = j.items.map(item => {
-  const storageUrl   = toStorageUrl(item.path);
-  const downloadUrl  = toDownloadUrl(item.path);
-  const downloadName = niceFileName(item.title, item.path);
-  const fileExt      = item.path ? item.path.split('.').pop()?.toLowerCase() || '' : '';
+    const storageUrl   = toStorageUrl(item.path);
+    const downloadUrl  = toDownloadUrl(item.path);
+    const downloadName = niceFileName(item.title, item.path);
+    const fileExt      = item.path ? item.path.split('.').pop()?.toLowerCase() || '' : '';
 
-  // Kursname oder Fallback
-  const courseInfo = item.course_name 
-    ? escapeHtml(item.course_name) 
-    : 'Kein Kurs';
+    // Kursname oder Fallback
+    const courseInfo = item.course_name
+      ? escapeHtml(item.course_name)
+      : 'Kein Kurs';
 
-  return `
-    <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b last:border-b-0">
-      <div class="flex-1">
-        <div class="font-semibold text-gray-900">${escapeHtml(item.title)}</div>
-        <div class="text-sm text-stone-500 mt-1">
-          ${courseInfo} • ${fileExt ? fileExt.toUpperCase() : ''}
+    return `
+      <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b last:border-b-0">
+        <div class="flex-1">
+          <div class="font-semibold text-gray-900">${escapeHtml(item.title)}</div>
+          <div class="text-sm text-stone-500 mt-1">
+            ${courseInfo} • ${fileExt ? fileExt.toUpperCase() : ''}
+          </div>
+          ${item.created_at
+            ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(item.created_at).toLocaleString('de-DE')}</div>`
+            : ''}
         </div>
-        ${item.created_at 
-          ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(item.created_at).toLocaleString('de-DE')}</div>` 
-          : ''}
-      </div>
-      
-      <div class="flex items-center gap-2 flex-shrink-0">
-        <!-- Anzeigen -->
-        <a href="${storageUrl}" 
-           target="_blank" 
-           rel="noopener"
-           class="px-3 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-sm">
-          Öffnen
-        </a>
-        
-        <!-- Download -->
-        <a href="${downloadUrl}" 
-           download="${downloadName}"
-           class="px-3 py-1 bg-rose-700 text-white rounded hover:bg-rose-800 text-sm">
-          Download
-        </a>
-        
-        <!-- Löschen -->
-        <button data-id="${item.id}" 
-                class="btn-del px-3 py-1 bg-rose-600 text-white rounded hover:bg-rose-700 text-sm">
-          Löschen
-        </button>
-      </div>
-    </div>
-  `;
-}).join('');
 
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <!-- Anzeigen -->
+          <a href="${storageUrl}"
+             target="_blank"
+             rel="noopener"
+             class="px-3 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-sm">
+            Öffnen
+          </a>
+
+          <!-- Download -->
+          <a href="${downloadUrl}"
+             download="${downloadName}"
+             class="px-3 py-1 bg-rose-700 text-white rounded hover:bg-rose-800 text-sm">
+            Download
+          </a>
+
+          <!-- Löschen -->
+          <button data-id="${item.id}"
+                  class="btn-del px-3 py-1 bg-rose-600 text-white rounded hover:bg-rose-700 text-sm">
+            Löschen
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 
   // Event-Listener für Löschen-Buttons
   box.querySelectorAll('.btn-del').forEach(b => {
     b.addEventListener('click', async () => {
       const id = b.getAttribute('data-id');
       const title = b.closest('.py-4').querySelector('.font-semibold').textContent;
-      
+
       if (!confirm(`Material "${title}" wirklich löschen?`)) return;
-      
+
       b.textContent = 'Lösche...';
       b.disabled = true;
-      
+
       const del = await APIJson('/api/cms/materials/' + id, { method: 'DELETE' })
-                   .catch(err => ({ ok: false, message: String(err) }));
-      
+        .catch(err => ({ ok: false, message: String(err) }));
+
       if (del.ok) {
         loadMaterials(); // Liste neu laden
       } else {
@@ -231,12 +244,12 @@ $('#btn-refresh-mats')?.addEventListener('click', loadMaterials);
 // ---- Materialien: Upload ----
 $('#upload-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   const courseId = $('#mat-course').value.trim(); // darf leer sein
   const title = $('#mat-title').value.trim();
   const fileInput = $('#mat-file');
   const file = fileInput.files[0];
-  
+
   // Validierung (Kurs NICHT mehr Pflicht)
   if (!title)  return alert('Bitte Titel eingeben');
   if (!file)   return alert('Bitte Datei auswählen');
@@ -271,8 +284,6 @@ $('#upload-form')?.addEventListener('submit', async (e) => {
     submitBtn.disabled = false;
   }
 });
-
-
 
 // Passwort ändern
 $('#btn-pwd')?.addEventListener('click', async () => {
@@ -325,7 +336,6 @@ $('#btn-pwd')?.addEventListener('click', async () => {
   }
 });
 
-
 // ---- XSS-Helper ----
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, m => ({
@@ -333,10 +343,22 @@ function escapeHtml(s) {
   }[m]));
 }
 
+// ---- Format-Helfer für Timestamps (Contacts/Appointments) ----
+function formatTs(v) {
+  if (!v) return '';
+  try {
+    const s = String(v);
+    if (s.includes('T')) return s.replace('T',' ').slice(0,19);
+    const d = new Date(v);
+    if (isNaN(d)) return s;
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  } catch {
+    return String(v);
+  }
+}
 
 // ---- Bilder-Management ----
-// Einheitliche, eindeutige Funktionen (keine Duplikate!)
-
 async function uploadImage(file) {
   const fd = new FormData();
   fd.append('file', file);
@@ -438,8 +460,6 @@ async function loadCourses() {
   }
 }
 
-
-
 // UI verkabeln (IDs müssen zu deinem admin.html passen)
 function wireImagesUI() {
   // **Formular**-Upload (empfohlen)
@@ -484,18 +504,174 @@ function wireImagesUI() {
   };
 })();
 
+// =========================
+// Contacts (CMS)
+// =========================
+let contactsOffset = 0;
+let contactsTotal = 0;
+
+async function loadContacts() {
+  const q = $('#contacts-q')?.value?.trim() || '';
+
+  const url = new URL('/api/cms/contacts', location.origin);
+  url.searchParams.set('limit', PAGE_SIZE);
+  url.searchParams.set('offset', contactsOffset);
+  if (q) url.searchParams.set('q', q);
+
+  const j = await APIJson(url, { method: 'GET' })
+    .catch(err => ({ ok:false, message:String(err) }));
+  if (!j || j.error) {
+    console.error('Fehler Kontakte:', j?.error || j?.message);
+    renderContacts([]);
+    renderContactsPager();
+    return;
+  }
+
+  contactsTotal = Number(j.total || 0);
+  renderContacts(j.items || []);
+  renderContactsPager();
+}
+
+function renderContacts(items) {
+  const tbody = document.querySelector('#contacts-table');
+  if (!tbody) return;
+  if (!Array.isArray(items) || items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-sm text-stone-500">Keine Einträge</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = items.map(r => `
+    <tr>
+      <td>${r.id}</td>
+      <td>
+        <div class="font-semibold">${escapeHtml(r.name)}</div>
+        <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
+      </td>
+      <td>${escapeHtml(r.phone || '')}</td>
+      <td class="max-w-[480px] whitespace-pre-wrap">${escapeHtml(r.message || '')}</td>
+      <td>${formatTs(r.created_at)}</td>
+      <td class="text-right">
+        <button class="btn btn-xs btn-error" data-contact-del="${r.id}">Löschen</button>
+      </td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('[data-contact-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-contact-del');
+      if (!confirm(`Kontaktanfrage #${id} löschen?`)) return;
+      const res = await APIJson(`/api/cms/contacts/${id}`, { method: 'DELETE' })
+        .catch(err => ({ ok:false, message:String(err) }));
+      if (res && res.ok) loadContacts();
+    });
+  });
+}
+
+function renderContactsPager() {
+  const pageEl = $('#contacts-page');
+  const page = Math.floor(contactsOffset / PAGE_SIZE) + 1;
+  const pages = Math.max(1, Math.ceil(contactsTotal / PAGE_SIZE));
+  if (pageEl) pageEl.textContent = `Seite ${page} / ${pages}`;
+  $('#contacts-prev').disabled = contactsOffset <= 0;
+  $('#contacts-next').disabled = contactsOffset + PAGE_SIZE >= contactsTotal;
+}
+
+$('#contacts-search')?.addEventListener('click', () => { contactsOffset = 0; loadContacts(); });
+$('#contacts-prev')?.addEventListener('click', () => { contactsOffset = Math.max(0, contactsOffset - PAGE_SIZE); loadContacts(); });
+$('#contacts-next')?.addEventListener('click', () => { contactsOffset = contactsOffset + PAGE_SIZE; loadContacts(); });
+
+// =========================
+// Appointments (CMS)
+// =========================
+let apptsOffset = 0;
+let apptsTotal = 0;
+
+async function loadAppointments() {
+  const q = $('#appts-q')?.value?.trim() || '';
+  const date_from = $('#appts-from')?.value || '';
+  const date_to = $('#appts-to')?.value || '';
+
+  const url = new URL('/api/cms/appointments', location.origin);
+  url.searchParams.set('limit', PAGE_SIZE);
+  url.searchParams.set('offset', apptsOffset);
+  if (q) url.searchParams.set('q', q);
+  if (date_from) url.searchParams.set('date_from', date_from);
+  if (date_to) url.searchParams.set('date_to', date_to);
+
+  const j = await APIJson(url, { method: 'GET' })
+    .catch(err => ({ ok:false, message:String(err) }));
+  if (!j || j.error) {
+    console.error('Fehler Termine:', j?.error || j?.message);
+    renderAppointments([]);
+    renderApptsPager();
+    return;
+  }
+
+  apptsTotal = Number(j.total || 0);
+  renderAppointments(j.items || []);
+  renderApptsPager();
+}
+
+function renderAppointments(items) {
+  const tbody = document.querySelector('#appts-table');
+  if (!tbody) return;
+  if (!Array.isArray(items) || items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-sm text-stone-500">Keine Einträge</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = items.map(r => `
+    <tr>
+      <td>${r.id}</td>
+      <td>
+        <div class="font-semibold">${escapeHtml(r.name)}</div>
+        <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
+      </td>
+      <td>${r.appointment_date || ''}</td>
+      <td>${(r.appointment_time || '').slice(0,5)}</td>
+      <td>${formatTs(r.created_at)}</td>
+      <td class="text-right">
+        <button class="btn btn-xs btn-error" data-appt-del="${r.id}">Löschen</button>
+      </td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('[data-appt-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-appt-del');
+      if (!confirm(`Termin #${id} löschen?`)) return;
+      const res = await APIJson(`/api/cms/appointments/${id}`, { method: 'DELETE' })
+        .catch(err => ({ ok:false, message:String(err) }));
+      if (res && res.ok) loadAppointments();
+    });
+  });
+}
+
+function renderApptsPager() {
+  const pageEl = $('#appts-page');
+  const page = Math.floor(apptsOffset / PAGE_SIZE) + 1;
+  const pages = Math.max(1, Math.ceil(apptsTotal / PAGE_SIZE));
+  if (pageEl) pageEl.textContent = `Seite ${page} / ${pages}`;
+  $('#appts-prev').disabled = apptsOffset <= 0;
+  $('#appts-next').disabled = apptsOffset + PAGE_SIZE >= apptsTotal;
+}
+
+$('#appts-search')?.addEventListener('click', () => { apptsOffset = 0; loadAppointments(); });
+$('#appts-prev')?.addEventListener('click', () => { apptsOffset = Math.max(0, apptsOffset - PAGE_SIZE); loadAppointments(); });
+$('#appts-next')?.addEventListener('click', () => { apptsOffset = apptsOffset + PAGE_SIZE; loadAppointments(); });
+
 // ---- Autostart: Session prüfen ----
 (async () => {
   try {
     const r = await fetch('/api/auth/me', { credentials: 'include' });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j.ok) { 
-      showApp(); 
+    if (r.ok && j.ok) {
+      showApp();
       loadCourses();
-      loadMaterials?.();        // falls vorhanden
-      renderImages?.();         // falls vorhanden
-    } else { 
-      showLogin(); 
+      loadMaterials?.();
+      renderImages?.();
+      loadContacts?.();
+      loadAppointments?.();
+    } else {
+      showLogin();
     }
   } catch {
     showLogin();

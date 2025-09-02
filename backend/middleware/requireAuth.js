@@ -11,4 +11,5 @@ export function requireAuth(req, res, next) {
     return res.status(401).json({ ok:false, message:'Invalid or expired session' });
   }
 }
+export default requireAuth;
 

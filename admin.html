@@ -25,6 +25,98 @@
       <p id="login-msg" class="text-sm text-stone-500"></p>
     </section>
 
+<!-- Kontakte -->
+<section id="contacts-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-semibold">Kontaktanfragen</h2>
+    <div class="flex flex-wrap gap-3 items-end">
+      <input id="contacts-q" type="text"
+             class="border border-gray-300 rounded p-2 w-64"
+             placeholder="Suche: Name, Email, Telefon, Nachricht" />
+      <button id="contacts-search"
+              class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
+        Filtern
+      </button>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto border rounded-lg bg-gray-50">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-3 py-2">ID</th>
+          <th class="px-3 py-2">Name / Email</th>
+          <th class="px-3 py-2">Telefon</th>
+          <th class="px-3 py-2">Nachricht</th>
+          <th class="px-3 py-2">Erstellt</th>
+          <th class="px-3 py-2 text-right">Aktion</th>
+        </tr>
+      </thead>
+      <tbody id="contacts-table" class="divide-y">
+        <!-- admin.js rendert hier <tr> hinein -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center gap-2 justify-end">
+    <button id="contacts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+      Zurück
+    </button>
+    <span id="contacts-page" class="text-sm text-stone-600"></span>
+    <button id="contacts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+      Weiter
+    </button>
+  </div>
+</section>
+
+<!-- Termine -->
+<section id="appointments-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-semibold">Eingegangene Termine</h2>
+    <div class="flex flex-wrap gap-3 items-end">
+      <input id="appts-q" type="text"
+             class="border border-gray-300 rounded p-2 w-56"
+             placeholder="Suche: Name oder Email" />
+      <input id="appts-from" type="date" class="border border-gray-300 rounded p-2" />
+      <input id="appts-to" type="date" class="border border-gray-300 rounded p-2" />
+      <button id="appts-search"
+              class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
+        Filtern
+      </button>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto border rounded-lg bg-gray-50">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-3 py-2">ID</th>
+          <th class="px-3 py-2">Name / Email</th>
+          <th class="px-3 py-2">Datum</th>
+          <th class="px-3 py-2">Uhrzeit</th>
+          <th class="px-3 py-2">Erstellt</th>
+          <th class="px-3 py-2 text-right">Aktion</th>
+        </tr>
+      </thead>
+      <tbody id="appts-table" class="divide-y">
+        <!-- admin.js rendert hier <tr> hinein -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center gap-2 justify-end">
+    <button id="appts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+      Zurück
+    </button>
+    <span id="appts-page" class="text-sm text-stone-600"></span>
+    <button id="appts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+      Weiter
+    </button>
+  </div>
+</section>
+
+
+
     <!-- Content Editor -->
     <section id="content-section" class="hidden max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
       <h2 class="text-xl font-semibold">Content bearbeiten</h2>
