@@ -1,3 +1,6 @@
+import { toast } from './toast.js';
+
+
 function normalizeDate(v) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
   const m = v.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
@@ -62,14 +65,14 @@ document.addEventListener("DOMContentLoaded", () => {
         form.elements["hp"].value = "";
         form.elements["ts"].value = Date.now();
         timeEl.innerHTML = `<option value="">Uhrzeit wählen</option>`;
-        alert("✅ Termin angefragt");
+        toast("✅ Termin angefragt");
       } else {
         console.warn("Termin 400/Fehler:", res.status, text);
-        alert(res.status === 429 ? "⏳ Zu viele Anfragen" : "❌ Termin fehlgeschlagen");
+        toast(res.status === 429 ? "⏳ Zu viele Anfragen" : "❌ Termin fehlgeschlagen");
       }
     } catch (err) {
       console.error("Termin Fehler:", err);
-      alert("❌ Serverfehler");
+      toast("❌ Serverfehler");
     }
   });
 });

@@ -1,3 +1,6 @@
+import { toast } from './toast.js';
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("contact-form");
   if (!form) return;
@@ -29,14 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
         form.elements["hp"].value = "";
         form.elements["ts"].value = Date.now();
-        alert("✅ Nachricht gesendet");
+        toast('✅ Nachricht erfolgreich gesendet!', 'success');
       } else {
         console.warn("Kontakt 400/Fehler:", res.status, text);
-        alert("❌ Senden fehlgeschlagen");
+        toast('❌ Senden fehlgeschlagen.', 'error');
       }
     } catch (err) {
       console.error("Kontakt Fehler:", err);
-      alert("❌ Serverfehler");
+      toast("❌ Serverfehler");
     }
   });
 });

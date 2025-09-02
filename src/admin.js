@@ -2,6 +2,7 @@
 // admin.js (CMS)
 // =========================
 
+
 // ---- Helpers ----
 const $ = (s) => document.querySelector(s);
 const PAGE_SIZE = 10; // Pager-Größe für CMS-Listen
