@@ -184,8 +184,7 @@ async function loadMaterials() {
             ${courseInfo} • ${fileExt ? fileExt.toUpperCase() : ''}
           </div>
           ${item.created_at
-            ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${new Date(item.created_at).toLocaleString('de-DE')}</div>`
-            : ''}
+            ? `<div class="text-xs text-stone-400 mt-1">Erstellt: ${formatTs(item.created_at)}</div>` : ''}
         </div>
 
         <div class="flex items-center gap-2 flex-shrink-0">
@@ -344,19 +343,46 @@ function escapeHtml(s) {
 }
 
 // ---- Format-Helfer für Timestamps (Contacts/Appointments) ----
+// ersetzt die alte formatTs-Funktion
 function formatTs(v) {
   if (!v) return '';
   try {
-    const s = String(v);
-    if (s.includes('T')) return s.replace('T',' ').slice(0,19);
-    const d = new Date(v);
-    if (isNaN(d)) return s;
-    const pad = n => String(n).padStart(2,'0');
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    let d;
+
+    if (v instanceof Date) {
+      d = v;
+    } else if (typeof v === 'string') {
+      // ISO mit Z: 2025-09-02T08:02:41.000Z -> korrekt als UTC parsen
+      if (/^\d{4}-\d{2}-\d{2}T/.test(v)) {
+        d = new Date(v); // behält die UTC-Info
+      } else {
+        // MySQL-Format: 'YYYY-MM-DD HH:MM:SS' -> als lokale Zeit interpretieren
+        const m = v.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/);
+        if (m) {
+          d = new Date(
+            Number(m[1]),
+            Number(m[2]) - 1,
+            Number(m[3]),
+            Number(m[4]),
+            Number(m[5]),
+            Number(m[6])
+          );
+        } else {
+          d = new Date(v);
+        }
+      }
+    } else {
+      d = new Date(v);
+    }
+
+    if (isNaN(d)) return String(v);
+    // Immer in Europe/Berlin anzeigen (inkl. Sommerzeit)
+    return d.toLocaleString('de-DE', { timeZone: 'Europe/Berlin', hour12: false });
   } catch {
     return String(v);
   }
 }
+
 
 // ---- Bilder-Management ----
 async function uploadImage(file) {
@@ -532,24 +558,36 @@ async function loadContacts() {
   renderContactsPager();
 }
 
+// ersetze deine formatDateDe durch diese "safe" Version
+function formatDateDe(v) {
+  if (!v) return '';
+  if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    const [y,m,d] = v.split('-');
+    return `${d}.${m}.${y}`; // 05.09.2025
+  }
+  try { return new Date(v).toLocaleDateString('de-DE'); }
+  catch { return String(v); }
+}
+
+
 function renderContacts(items) {
   const tbody = document.querySelector('#contacts-table');
   if (!tbody) return;
   if (!Array.isArray(items) || items.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-sm text-stone-500">Keine Einträge</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="px-3 py-2 text-sm text-stone-500">Keine Einträge</td></tr>`;
     return;
   }
   tbody.innerHTML = items.map(r => `
-    <tr>
-      <td>${r.id}</td>
-      <td>
+    <tr class="hover:bg-gray-50">
+      <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums text-neutral-700">${r.id}</td>
+      <td class="px-3 py-2 align-middle">
         <div class="font-semibold">${escapeHtml(r.name)}</div>
         <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
       </td>
-      <td>${escapeHtml(r.phone || '')}</td>
-      <td class="max-w-[480px] whitespace-pre-wrap">${escapeHtml(r.message || '')}</td>
-      <td>${formatTs(r.created_at)}</td>
-      <td class="text-right">
+      <td class="px-3 py-2 align-middle whitespace-nowrap">${escapeHtml(r.phone || '')}</td>
+      <td class="px-3 py-2 align-middle max-w-[480px] whitespace-pre-wrap">${escapeHtml(r.message || '')}</td>
+      <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums">${formatTs(r.created_at)}</td>
+      <td class="px-3 py-2 align-middle text-right">
         <button class="btn btn-xs btn-error" data-contact-del="${r.id}">Löschen</button>
       </td>
     </tr>
@@ -565,6 +603,7 @@ function renderContacts(items) {
     });
   });
 }
+
 
 function renderContactsPager() {
   const pageEl = $('#contacts-page');
@@ -615,20 +654,20 @@ function renderAppointments(items) {
   const tbody = document.querySelector('#appts-table');
   if (!tbody) return;
   if (!Array.isArray(items) || items.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-sm text-stone-500">Keine Einträge</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="px-3 py-2 text-sm text-stone-500">Keine Einträge</td></tr>`;
     return;
   }
   tbody.innerHTML = items.map(r => `
-    <tr>
-      <td>${r.id}</td>
-      <td>
+    <tr class="hover:bg-gray-50">
+      <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums text-neutral-700">${r.id}</td>
+      <td class="px-3 py-2 align-middle">
         <div class="font-semibold">${escapeHtml(r.name)}</div>
         <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
       </td>
-      <td>${r.appointment_date || ''}</td>
-      <td>${(r.appointment_time || '').slice(0,5)}</td>
-      <td>${formatTs(r.created_at)}</td>
-      <td class="text-right">
+      <td class="px-3 py-2 align-middle whitespace-nowrap">${formatDateDe(r.appointment_date) || ''}</td>
+      <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums">${(r.appointment_time || '').slice(0,5)}</td>
+      <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums">${formatTs(r.created_at)}</td>
+      <td class="px-3 py-2 align-middle text-right">
         <button class="btn btn-xs btn-error" data-appt-del="${r.id}">Löschen</button>
       </td>
     </tr>
@@ -644,6 +683,7 @@ function renderAppointments(items) {
     });
   });
 }
+
 
 function renderApptsPager() {
   const pageEl = $('#appts-page');

@@ -1,114 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // === KONTAKTFORMULAR ===
-  const contactForm = document.getElementById("contact-form");
-  const contactMsg  = document.getElementById("contact-message");
+  const form = document.getElementById("contact-form");
+  if (!form) return;
 
-  if (contactForm && contactMsg) {
-    const hpContact = document.getElementById("hp-contact");
-    const tsContact = document.getElementById("ts-contact");
-    if (tsContact) tsContact.value = Date.now();
-    if (hpContact) hpContact.value = "";
+  // Anti-Spam Felder initialisieren
+  form.elements["hp"].value = "";
+  form.elements["ts"].value = Date.now();
 
-    // Timestamp auffrischen, wenn Nutzer ins Formular klickt
-    contactForm.addEventListener("focusin", () => {
-      if (tsContact) tsContact.value = Date.now();
-    });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.target;
+    const payload = {
+      name:    form.elements["name"].value.trim(),
+      email:   form.elements["email"].value.trim(),
+      message: form.elements["message"].value.trim(),
+      hp:      form.elements["hp"].value || "",
+      ts:      Number(form.elements["ts"].value || 0),
+    };
 
-      const data = {
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        message: form.message.value,
-        hp: form.hp?.value || "",
-        ts: Number(form.ts?.value || 0),
-      };
-
-      contactMsg.classList.add("hidden");
-
-      try {
-        const res = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        const result = await res.json();
-
-        if (result.success) {
-          form.reset();
-          if (tsContact) tsContact.value = Date.now();
-          showMessage("✅ Nachricht erfolgreich gesendet!", "success");
-        } else {
-          showMessage("❌ Fehler beim Absenden.", "error");
-        }
-      } catch (err) {
-        console.error("❌ Fehler:", err);
-        showMessage("❌ Serverfehler – bitte später erneut versuchen.", "error");
-      }
-    });
-
-    function showMessage(text, type) {
-      contactMsg.textContent = text;
-      contactMsg.className = "mt-2 rounded px-4 py-2 text-sm font-semibold";
-      if (type === "success") {
-        contactMsg.classList.add("text-green-700", "bg-green-100");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const text = await res.text();
+      let j = {}; try { j = JSON.parse(text); } catch {}
+      if (res.ok && (j.ok || j.success)) {
+        form.reset();
+        form.elements["hp"].value = "";
+        form.elements["ts"].value = Date.now();
+        alert("✅ Nachricht gesendet");
       } else {
-        contactMsg.classList.add("text-red-700", "bg-red-100");
+        console.warn("Kontakt 400/Fehler:", res.status, text);
+        alert("❌ Senden fehlgeschlagen");
       }
-      contactMsg.classList.remove("hidden");
-      setTimeout(() => contactMsg.classList.add("hidden"), 6000);
+    } catch (err) {
+      console.error("Kontakt Fehler:", err);
+      alert("❌ Serverfehler");
     }
-  }
-
-  // === TERMINFORMULAR ===
-  const appointmentForm = document.getElementById("appointment-form");
-  const hpAppointment   = document.getElementById("hp-appointment");
-  const tsAppointment   = document.getElementById("ts-appointment");
-
-  if (appointmentForm) {
-    if (tsAppointment) tsAppointment.value = Date.now();
-    if (hpAppointment) hpAppointment.value = "";
-
-    // Timestamp auffrischen, wenn Nutzer ins Formular klickt
-    appointmentForm.addEventListener("focusin", () => {
-      if (tsAppointment) tsAppointment.value = Date.now();
-    });
-
-    appointmentForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const f = e.target;
-
-      const payload = {
-        name: f["appointment-name"].value,
-        email: f["appointment-email"].value,
-        date: f["date"].value,
-        time: f["time"].value,
-        hp: f.hp?.value || "",
-        ts: Number(f.ts?.value || 0),
-      };
-
-      try {
-        const res = await fetch("/api/appointments", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const result = await res.json();
-        if (result.success) {
-          f.reset();
-          if (tsAppointment) tsAppointment.value = Date.now();
-          alert("✅ Termin wurde angefragt!");
-        } else {
-          alert("❌ Fehler beim Absenden der Terminanfrage.");
-        }
-      } catch (err) {
-        console.error("❌ Fehler:", err);
-        alert("❌ Serverfehler bei Terminbuchung.");
-      }
-    });
-  }
+  });
 });

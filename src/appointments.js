@@ -1,74 +1,75 @@
+function normalizeDate(v) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+  const m = v.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  return m ? `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}` : v;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const appointmentForm = document.getElementById("appointment-form");
-  const appointmentMsg = document.getElementById("appointment-message");
+  const form = document.getElementById("appointment-form");
+  if (!form) return;
 
-  appointmentForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = e.target;
+  // Anti-Spam Felder initialisieren
+  form.elements["hp"].value = "";
+  form.elements["ts"].value = Date.now();
 
-    const data = {
-      name: form.name.value,
-      email: form.email.value,
-      date: form.date.value,
-      time: form.time.value
-    };
-
-    appointmentMsg.classList.add("hidden");
-
+  // Zeiten laden (falls du /available nutzt)
+  const dateIn = form.elements["date"];
+  const timeEl = form.elements["time"];
+  dateIn?.addEventListener("change", async (e) => {
+    const iso = normalizeDate(e.target.value);
+    if (!iso) { timeEl.innerHTML = `<option value="">Bitte gültiges Datum</option>`; return; }
+    timeEl.innerHTML = `<option>Lade verfügbare Uhrzeiten…</option>`;
     try {
-      const res = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+      const r = await fetch(`/api/appointments/available?date=${encodeURIComponent(iso)}`);
+      const times = await r.json().catch(() => []);
+      timeEl.innerHTML = `<option value="">Uhrzeit wählen</option>`;
+      (times || []).forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t; opt.textContent = t; timeEl.appendChild(opt);
       });
-
-      const result = await res.json();
-
-      if(result.success) {
-        appointmentForm.reset();
-        appointmentMsg.textContent = "✅ Termin erfolgreich gebucht!";
-        appointmentMsg.className = "text-green-700 bg-green-100 rounded px-4 py-2 mt-2";
-      } else {
-        appointmentMsg.textContent = "❌ Fehler: Termin nicht möglich.";
-        appointmentMsg.className = "text-red-700 bg-red-100 rounded px-4 py-2 mt-2";
+      if (!times?.length) {
+        const opt = document.createElement("option");
+        opt.disabled = true; opt.textContent = "Keine freien Zeiten"; timeEl.appendChild(opt);
       }
-
-    } catch (err) {
-      console.error("FEHLER:", err);
-      appointmentMsg.textContent = "❌ Technischer Fehler – bitte später erneut versuchen.";
-      appointmentMsg.className = "text-red-700 bg-red-100 rounded px-4 py-2 mt-2";
+    } catch {
+      timeEl.innerHTML = `<option>Fehler beim Laden</option>`;
     }
   });
 
-  // Datumsauswahl → Uhrzeiten aktualisieren
-  document.getElementById("datepicker").addEventListener("change", async (e) => {
-    const date = e.target.value;
-    const timeSelect = document.getElementById("time-select");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const isoDate = normalizeDate(form.elements["date"].value);
 
-    timeSelect.innerHTML = `<option>Lade verfügbare Uhrzeiten...</option>`;
+    const payload = {
+      name:  form.elements["name"].value.trim(),
+      email: form.elements["email"].value.trim(),
+      date:  isoDate,
+      time:  form.elements["time"].value,
+      hp:    form.elements["hp"].value || "",
+      ts:    Number(form.elements["ts"].value || 0),
+    };
 
     try {
-      const res = await fetch(`/api/appointments/available?date=${date}`);
-      const times = await res.json();
-
-      timeSelect.innerHTML = `<option value="">Uhrzeit wählen</option>`;
-      times.forEach(time => {
-        const opt = document.createElement("option");
-        opt.value = time;
-        opt.textContent = time;
-        timeSelect.appendChild(opt);
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-
-      if (times.length === 0) {
-        const opt = document.createElement("option");
-        opt.disabled = true;
-        opt.textContent = "Keine freien Zeiten";
-        timeSelect.appendChild(opt);
+      const text = await res.text();
+      let j = {}; try { j = JSON.parse(text); } catch {}
+      if (res.ok && (j.ok || j.success)) {
+        form.reset();
+        form.elements["hp"].value = "";
+        form.elements["ts"].value = Date.now();
+        timeEl.innerHTML = `<option value="">Uhrzeit wählen</option>`;
+        alert("✅ Termin angefragt");
+      } else {
+        console.warn("Termin 400/Fehler:", res.status, text);
+        alert(res.status === 429 ? "⏳ Zu viele Anfragen" : "❌ Termin fehlgeschlagen");
       }
-
     } catch (err) {
-      console.error("Uhrzeiten-Fehler:", err);
-      timeSelect.innerHTML = `<option>Fehler beim Laden</option>`;
+      console.error("Termin Fehler:", err);
+      alert("❌ Serverfehler");
     }
   });
 });
