@@ -23,14 +23,14 @@ export default function spamGuard(required = []) {
       return res.status(200).json({ success: true }); // leise "ok"
     }
 
-    // 3) Form-Age (clientTS = ms since epoch beim Rendern)
+    // 3) Form-Age (Verhindert zu schnelle Formularübermittlung)
     const now = Date.now();
     const clientTS = Number(b.ts || 0);
     if (!clientTS || isNaN(clientTS) || now - clientTS < 3000 || now - clientTS > 20 * 60 * 1000) {
       return res.status(400).json({ error: "Ungültige Formularzeit." });
     }
 
-    // 4) Plausibilität / Limits
+    // 4) Plausibilitätsprüfung der Eingaben 
     const fieldStr = (x) => (typeof x === "string" ? x : "");
     const name = fieldStr(b.name);
     const email = fieldStr(b.email);
@@ -39,7 +39,7 @@ export default function spamGuard(required = []) {
     const date = fieldStr(b.date);
     const time = fieldStr(b.time);
 
-    // Längen
+    // Limits
     if (name.length > 100 || email.length > 200 || phone.length > 40 || message.length > 2000) {
       return res.status(400).json({ error: "Feld zu lang." });
     }
@@ -49,7 +49,7 @@ export default function spamGuard(required = []) {
       return res.status(400).json({ error: "E-Mail ungültig." });
     }
 
-    // Max. 2 Links im Freitext
+    // Max. 2 Links im Nachrichtentext zulässig
     const urlLike = (message.match(/https?:\/\/|www\./gi) || []).length;
     if (urlLike > 2) {
       return res.status(400).json({ error: "Zu viele Links." });

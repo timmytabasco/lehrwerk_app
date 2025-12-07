@@ -1,234 +1,204 @@
 <!doctype html>
 <html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lehrwerk CMS</title>
-  
-  <!-- Fallback: deine kompilierte CSS falls vorhanden -->
-  <link href="src/style.css" rel="stylesheet" />
-  
-  <script defer type="module" src="/src/admin.js"></script>
-</head>
-<body class="bg-neutral-100 min-h-screen">
-  <main class="container mx-auto px-4 py-12 space-y-10">
-    <h1 class="text-3xl font-bold text-center">Lehrwerk CMS</h1>
-
-    <!-- Login -->
-    <section id="login-section" class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
-      <h2 class="text-xl font-semibold">Login</h2>
-      <input id="login-email" type="email" class="border rounded p-3 w-full" placeholder="Email" />
-      <input id="login-pass" type="password" class="border rounded p-3 w-full" placeholder="Passwort" />
-      <button id="btn-login" class="w-full px-5 py-3 bg-rose-700 text-white rounded-xl font-semibold hover:bg-rose-800 transition">
-        Einloggen
-      </button>
-      <p id="login-msg" class="text-sm text-stone-500"></p>
-    </section>
-
-<!-- Kontakte -->
-<section id="contacts-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
-  <div class="flex items-center justify-between">
-    <h2 class="text-xl font-semibold">Kontaktanfragen</h2>
-    <div class="flex flex-wrap gap-3 items-end">
-      <input id="contacts-q" type="text"
-             class="border border-gray-300 rounded p-2 w-64"
-             placeholder="Suche: Name, Email, Telefon, Nachricht" />
-      <button id="contacts-search"
-              class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
-        Filtern
-      </button>
-    </div>
-  </div>
-
-  <div class="overflow-x-auto border rounded-lg bg-gray-50">
-    <table class="w-full text-left text-sm">
-      <thead class="bg-gray-100 text-gray-700">
-        <tr>
-          <th class="px-3 py-2">ID</th>
-          <th class="px-3 py-2">Name / Email</th>
-          <th class="px-3 py-2">Telefon</th>
-          <th class="px-3 py-2">Nachricht</th>
-          <th class="px-3 py-2">Erstellt</th>
-          <th class="px-3 py-2 text-right">Aktion</th>
-        </tr>
-      </thead>
-      <tbody id="contacts-table" class="divide-y">
-        <!-- admin.js rendert hier <tr> hinein -->
-      </tbody>
-    </table>
-  </div>
-
-  <div class="flex items-center gap-2 justify-end">
-    <button id="contacts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
-      Zurück
-    </button>
-    <span id="contacts-page" class="text-sm text-stone-600"></span>
-    <button id="contacts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
-      Weiter
-    </button>
-  </div>
-</section>
-
-<!-- Termine -->
-<section id="appointments-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
-  <div class="flex items-center justify-between">
-    <h2 class="text-xl font-semibold">Eingegangene Termine</h2>
-    <div class="flex flex-wrap gap-3 items-end">
-      <input id="appts-q" type="text"
-             class="border border-gray-300 rounded p-2 w-56"
-             placeholder="Suche: Name oder Email" />
-      <input id="appts-from" type="date" class="border border-gray-300 rounded p-2" />
-      <input id="appts-to" type="date" class="border border-gray-300 rounded p-2" />
-      <button id="appts-search"
-              class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
-        Filtern
-      </button>
-    </div>
-  </div>
-
-  <div class="overflow-x-auto border rounded-lg bg-gray-50">
-    <table class="w-full text-left text-sm">
-      <thead class="bg-gray-100 text-gray-700">
-        <tr>
-          <th class="px-3 py-2">ID</th>
-          <th class="px-3 py-2">Name / Email</th>
-          <th class="px-3 py-2">Datum</th>
-          <th class="px-3 py-2">Uhrzeit</th>
-          <th class="px-3 py-2">Erstellt</th>
-          <th class="px-3 py-2 text-right">Aktion</th>
-        </tr>
-      </thead>
-      <tbody id="appts-table" class="divide-y">
-        <!-- admin.js rendert hier <tr> hinein -->
-      </tbody>
-    </table>
-  </div>
-
-  <div class="flex items-center gap-2 justify-end">
-    <button id="appts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
-      Zurück
-    </button>
-    <span id="appts-page" class="text-sm text-stone-600"></span>
-    <button id="appts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
-      Weiter
-    </button>
-  </div>
-</section>
-
-
-
-    <!-- Content Editor -->
-    <section id="content-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
-      <h2 class="text-xl font-semibold">Content bearbeiten</h2>
-      <div class="flex flex-wrap gap-3 items-center">
-        <select id="content-select" class="border rounded p-2">
-          <option value="faq.json">faq.json</option>
-          <option value="kurse.json">kurse.json</option>
-          <option value="kursvorschau.json">kursvorschau.json</option>
-          <option value="modals.json">modals.json</option>
-          <option value="rechtliches.json">rechtliches.json</option>
-          <option value="ueberuns.json">ueberuns.json</option>
-        </select>
-        <button id="btn-load" class="px-4 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">Laden</button>
-        <button id="btn-save" class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition">Speichern</button>
-        <span id="content-msg" class="text-sm text-stone-500"></span>
-      </div>
-      <textarea id="content-area" class="w-full h-[50vh] border rounded p-3 font-mono text-sm" spellcheck="false"></textarea>
-    </section>
-
-    
-      <!-- Bilder (Admin) -->
-<section id="images-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
-  <div class="flex items-center justify-between">
-    <h2 class="text-xl font-semibold">Bilder verwalten</h2>
-    <button id="btn-refresh-imgs" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
-      Aktualisieren
-    </button>
-  </div>
-
-  <!-- Upload -->
-  <form id="img-upload-form" class="flex gap-3 items-end">
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Datei</label>
-      <input id="img-file" type="file" class="border border-gray-300 rounded p-2 w-full" />
-    </div>
-    <button type="submit"
-      class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition font-medium">
-      Hochladen
-    </button>
-  </form>
-
-  <!-- Liste -->
-  <div id="images-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-</section>
-
-
-
-    <!-- Materialien (Admin) -->
-    <section id="materials-section" class="hidden max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
-      <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold">Materialien verwalten</h2>
-        <button id="btn-refresh-mats" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">Aktualisieren</button>
-      </div>
-
-      <!-- Upload -->
-      <form id="upload-form" class="grid md:grid-cols-4 gap-3 items-end">
-        <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Kurs</label>
-    <select id="mat-course" class="border border-gray-300 rounded p-2 w-full">
-      <option value="">– bitte wählen –</option>
-      <!-- Optionen werden per JS nachgeladen -->
-    </select>
-  </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Titel</label>
-          <input id="mat-title" class="border border-gray-300 rounded p-2 w-full" placeholder="Material-Titel" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Datei</label>
-          <input id="mat-file" type="file" class="border border-gray-300 rounded p-2 w-full" />
-        </div>
-        <button type="submit" class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition font-medium">
-          Upload
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lehrwerk | CMS</title>
+    <link href="src/style.css" rel="stylesheet" />
+    <script defer type="module" src="/src/admin.js"></script>
+  </head>
+  <body>
+     <h1 class="text-3xl mt-12 font-bold text-center">Dashboard</h1>
+    <main class="space-y-14 py-8">
+      <!-- Login -->
+      <section id="login-section" class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+        <h2 class="text-xl font-semibold">Login</h2>
+        <input id="login-email" type="email" class="border rounded p-3 w-full" placeholder="Email" />
+        <input id="login-pass" type="password" class="border rounded p-3 w-full" placeholder="Passwort" />
+        <button id="btn-login" class="w-full px-5 py-3 bg-rose-700 text-white rounded-xl font-semibold hover:bg-rose-800 transition">
+          Einloggen
         </button>
-      </form>
+        <p id="login-msg" class="text-sm text-stone-500"></p>
+      </section>
 
-      <!-- Liste -->
-      <div id="materials-list" class="divide-y border rounded-lg bg-gray-50"></div>
-    </section>
+      <!-- Kontakte -->
+      <section id="contacts-section" class="hidden border border-gray-300 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold">Kontaktanfragen</h2>
+          <div class="flex flex-wrap gap-3 items-end">
+            <input id="contacts-q" type="text" class="border border-gray-300 rounded p-2 w-64" placeholder="Suche: Name, Email, Telefon, Nachricht" />
+            <button id="contacts-search" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
+              Filtern
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto border rounded-lg bg-gray-50">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-100 text-gray-700">
+              <tr>
+                <th class="px-3 py-2">ID</th>
+                <th class="px-3 py-2">Name / Email</th>
+                <th class="px-3 py-2">Telefon</th>
+                <th class="px-3 py-2">Nachricht</th>
+                <th class="px-3 py-2">Erstellt</th>
+                <th class="px-3 py-2 text-right">Aktion</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-table" class="divide-y">
+              <!-- admin.js rendert hier <tr> hinein -->
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center gap-2 justify-end">
+          <button id="contacts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+            Zurück
+          </button>
+          <span id="contacts-page" class="text-sm text-stone-600"></span>
+          <button id="contacts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+            Weiter
+          </button>
+        </div>
+      </section>
 
-    <!-- Passwort ändern -->
-<section id="pwd-section" class="hidden max-w-md mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
-  <h2 class="text-xl font-semibold">Admin-Passwort ändern</h2>
+      <!-- Termine -->
+      <section id="appointments-section" class="hidden border border-gray-300 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold">Eingegangene Termine</h2>
+          <div class="flex flex-wrap gap-3 items-end">
+            <input id="appts-q" type="text" class="border border-gray-300 rounded p-2 w-56" placeholder="Suche: Name oder Email" />
+            <input id="appts-from" type="date" class="border border-gray-300 rounded p-2" />
+            <input id="appts-to" type="date" class="border border-gray-300 rounded p-2" />
+            <button id="appts-search" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
+              Filtern
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto border rounded-lg bg-gray-50">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-100 text-gray-700">
+              <tr>
+                <th class="px-3 py-2">ID</th>
+                <th class="px-3 py-2">Name / Email</th>
+                <th class="px-3 py-2">Datum</th>
+                <th class="px-3 py-2">Uhrzeit</th>
+                <th class="px-3 py-2">Erstellt</th>
+                <th class="px-3 py-2 text-right">Aktion</th>
+              </tr>
+            </thead>
+            <tbody id="appts-table" class="divide-y">
+              <!-- admin.js rendert hier <tr> hinein -->
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center gap-2 justify-end">
+          <button id="appts-prev" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+            Zurück
+          </button>
+          <span id="appts-page" class="text-sm text-stone-600"></span>
+          <button id="appts-next" class="px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+            Weiter
+          </button>
+        </div>
+      </section>
 
-  <div class="space-y-2">
-    <label class="block text-sm text-gray-700">Aktuelles Passwort</label>
-    <input id="pwd-current" type="password" class="border rounded p-3 w-full" placeholder="••••••••" autocomplete="current-password" />
-  </div>
+      <!-- Content Editor -->
+      <section id="content-section" class="hidden border border-gray-300 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+        <h2 class="text-xl font-semibold">Content bearbeiten</h2>
+        <div class="flex flex-wrap gap-3 items-center">
+          <select id="content-select" class="border rounded p-2">
+            <option value="faq.json">faq.json</option>
+            <option value="kurse.json">kurse.json</option>
+            <option value="kursvorschau.json">kursvorschau.json</option>
+            <option value="modals.json">modals.json</option>
+            <option value="rechtliches.json">rechtliches.json</option>
+            <option value="ueberuns.json">ueberuns.json</option>
+          </select>
+          <button id="btn-load" class="px-4 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">Laden</button>
+          <button id="btn-save" class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition">Speichern</button>
+          <span id="content-msg" class="text-sm text-stone-500"></span>
+        </div>
+        <textarea id="content-area" class="w-full h-[50vh] border rounded p-3 font-mono text-sm" spellcheck="false"></textarea>
+      </section>
 
-  <div class="space-y-2">
-    <label class="block text-sm text-gray-700">Neues Passwort (min. 8 Zeichen)</label>
-    <input id="pwd-next" type="password" class="border rounded p-3 w-full" placeholder="Neues Passwort" autocomplete="new-password" />
-  </div>
+      <!-- Bilder (Admin) -->
+      <section id="images-section" class="hidden border border-gray-300 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold">Bilder verwalten</h2>
+          <button id="btn-refresh-imgs" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">
+            Aktualisieren
+          </button>
+        </div>
+        <!-- Upload -->
+        <form id="img-upload-form" class="flex gap-3 items-end">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Datei</label>
+            <input id="img-file" type="file" class="border border-gray-300 rounded p-2 w-full" />
+          </div>
+          <button type="submit" class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition font-medium">
+            Hochladen
+          </button>
+        </form>
+        <!-- Liste -->
+        <div id="images-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+      </section>
 
-  <div class="space-y-2">
-    <label class="block text-sm text-gray-700">Neues Passwort wiederholen</label>
-    <input id="pwd-next2" type="password" class="border rounded p-3 w-full" placeholder="Neues Passwort wiederholen" autocomplete="new-password" />
-  </div>
+      <!-- Materialien (Admin) -->
+      <section id="materials-section" class="hidden border border-gray-300 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold">Materialien verwalten</h2>
+          <button id="btn-refresh-mats" class="px-3 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-900 transition">Aktualisieren</button>
+        </div>
+        <!-- Upload -->
+        <form id="upload-form" class="grid md:grid-cols-4 gap-3 items-end">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Kurs</label>
+            <select id="mat-course" class="border border-gray-300 rounded p-2 w-full">
+              <option value="">– bitte wählen –</option>
+              <!-- Optionen werden per JS nachgeladen -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Titel</label>
+            <input id="mat-title" class="border border-gray-300 rounded p-2 w-full" placeholder="Material-Titel" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Datei</label>
+            <input id="mat-file" type="file" class="border border-gray-300 rounded p-2 w-full" />
+          </div>
+          <button type="submit" class="px-4 py-2 bg-rose-700 text-white rounded hover:bg-rose-800 transition font-medium">
+            Upload
+          </button>
+        </form>
+        <!-- Liste -->
+        <div id="materials-list" class="divide-y border rounded-lg bg-gray-50"></div>
+      </section>
 
-  <button id="btn-pwd" class="w-full px-5 py-3 bg-neutral-800 text-white rounded-xl font-semibold hover:bg-neutral-900 transition">
-    Passwort ändern
-  </button>
+      <!-- Passwort ändern -->
+      <section id="pwd-section" class="hidden border border-gray-300 max-w-md mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+        <h2 class="text-xl font-semibold">Admin-Passwort ändern</h2>
+        <div class="space-y-2">
+          <label class="block text-sm text-gray-700">Aktuelles Passwort</label>
+          <input id="pwd-current" type="password" class="border rounded p-3 w-full" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm text-gray-700">Neues Passwort (min. 8 Zeichen)</label>
+          <input id="pwd-next" type="password" class="border rounded p-3 w-full" placeholder="Neues Passwort" autocomplete="new-password" />
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm text-gray-700">Neues Passwort wiederholen</label>
+          <input id="pwd-next2" type="password" class="border rounded p-3 w-full" placeholder="Neues Passwort wiederholen" autocomplete="new-password" />
+        </div>
+        <button id="btn-pwd" class="w-full px-5 py-3 bg-neutral-800 text-white rounded-xl font-semibold hover:bg-neutral-900 transition">
+          Passwort ändern
+        </button>
+        <p id="pwd-msg" class="text-sm text-stone-500"></p>
+      </section>
 
-  <p id="pwd-msg" class="text-sm text-stone-500"></p>
-</section>
-
-
-    <div class="flex flex-col items-center justify-between">
-      <button id="btn-logout" class="hidden px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
-        Logout
-      </button>
-    </div>
-  </main>
-</body>
+      <div class="flex flex-col items-center justify-between">
+        <button id="btn-logout" class="hidden px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition">
+          Logout
+        </button>
+      </div>
+    </main>
+  </body>
 </html>
