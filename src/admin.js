@@ -583,7 +583,9 @@ function renderContacts(items) {
       <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums text-neutral-700">${r.id}</td>
       <td class="px-3 py-2 align-middle">
         <div class="font-semibold">${escapeHtml(r.name)}</div>
-        <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
+        <a href="mailto:${escapeHtml(r.email)}" class="text-blue-600 hover:text-blue-800 hover:underline">
+  ${escapeHtml(r.email)}
+</a>
       </td>
       <td class="px-3 py-2 align-middle whitespace-nowrap">${escapeHtml(r.phone || '')}</td>
       <td class="px-3 py-2 align-middle max-w-[480px] whitespace-pre-wrap">${escapeHtml(r.message || '')}</td>
@@ -663,7 +665,7 @@ function renderAppointments(items) {
       <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums text-neutral-700">${r.id}</td>
       <td class="px-3 py-2 align-middle">
         <div class="font-semibold">${escapeHtml(r.name)}</div>
-        <div class="text-xs text-neutral-500">${escapeHtml(r.email)}</div>
+       <a href="mailto:${escapeHtml(r.email)}" class="text-blue-600 hover:text-blue-800 hover:underline">${escapeHtml(r.email)}</a>
       </td>
       <td class="px-3 py-2 align-middle whitespace-nowrap">${formatDateDe(r.appointment_date) || ''}</td>
       <td class="px-3 py-2 align-middle whitespace-nowrap tabular-nums">${(r.appointment_time || '').slice(0,5)}</td>
