@@ -16,3 +16,25 @@ Während der Arbeit an diesem Projekt habe ich gelernt, wie man ein größeres P
 Die Anwendung wird auf einem eigenen Linux-VPS betrieben, den ich selbst eingerichtet habe. Dazu zählen die Serverkonfiguration, grundlegende Absicherung sowie das Deployment der Anwendung. Dadurch habe ich ein besseres Verständnis dafür bekommen, wie eine Webanwendung außerhalb der Entwicklungsumgebung läuft.
 
 Das Projekt stellt meinen aktuellen Stand dar und ist nicht als endgültig abgeschlossen zu verstehen. Es dient als Referenz für meine Fähigkeiten und als Grundlage, um weitere Funktionen oder Verbesserungen umzusetzen.
+
+___
+
+# Lehrwerk Webapp – Final Project
+
+Hi 👋  
+this project was created as my final project during my retraining as an application developer.
+
+The Lehrwerk Webapp is a web-based application for providing learning content in a structured way. It also includes a simple content management system to manage and update the content. The goal of this project was to build a realistic application where frontend, backend and data storage work together.
+
+The application has a public area where users can view content and materials, and a protected admin area. In the admin area, content and materials can be created, edited and managed. I focused on keeping the features clear and easy to understand, while implementing the core functionality in a clean way.
+
+The frontend is built with HTML, JavaScript and Tailwind CSS. I focused on a clear structure, readable code and a simple user interface. Many parts of the interface are dynamic and load data from the backend.
+
+The backend is built with Node.js and Express. It provides several API endpoints, including authentication, content handling and material management. Communication between frontend and backend is done through REST APIs. A database is used to store the content.
+
+While working on this project, I learned how to plan and build a larger application step by step. This includes writing clean code, using Git for version control and separating responsibilities between different parts of the application.
+
+The application is hosted on my own Linux VPS, which I set up myself. This includes basic server configuration, security and deployment. This helped me understand how a web application runs outside of a local development environment.
+
+This project shows my current skill level and is not meant to be a finished product. It serves as a reference for my work and as a base for future improvements.
+
