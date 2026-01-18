@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.elements["hp"].value = "";
   form.elements["ts"].value = Date.now();
 
-  // Zeiten laden (falls du /available nutzt)
+  // Zeiten laden 
   const dateIn = form.elements["date"];
   const timeEl = form.elements["time"];
   dateIn?.addEventListener("change", async (e) => {

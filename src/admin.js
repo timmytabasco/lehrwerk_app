@@ -134,7 +134,7 @@ function toDownloadUrl(pathFromDb) {
 }
 
 /**
- * Generiert schönen Download-Namen aus Titel
+ * Generiert Download-Namen aus Titel
  */
 function niceFileName(title, originalPath) {
   const cleanTitle = (title || 'material')
@@ -250,7 +250,7 @@ $('#upload-form')?.addEventListener('submit', async (e) => {
   const fileInput = $('#mat-file');
   const file = fileInput.files[0];
 
-  // Validierung (Kurs NICHT mehr Pflicht)
+  // Validierung
   if (!title)  return alert('Bitte Titel eingeben');
   if (!file)   return alert('Bitte Datei auswählen');
 
@@ -559,7 +559,7 @@ async function loadContacts() {
   renderContactsPager();
 }
 
-// ersetze deine formatDateDe durch diese "safe" Version
+
 function formatDateDe(v) {
   if (!v) return '';
   if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) {

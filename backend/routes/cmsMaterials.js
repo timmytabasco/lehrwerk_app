@@ -65,8 +65,6 @@ router.get('/', requireAuth, async (req, res, next) => {
   }
 });
 
-   
-
 /**
  * POST /api/cms/materials
  * Neues Material hochladen

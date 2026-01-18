@@ -4,6 +4,7 @@ import './style.css'; // Importiere globale Styles (Tailwind CSS)
 // 1. DOM-ELEMENTE SELEKTIONEN
 // =====================================================
 
+
 // Mobile Menu Elemente
 const hamburgerBtn = document.querySelector('#hamburger');
 const mobileMenu = document.querySelector('#mobile-menu');

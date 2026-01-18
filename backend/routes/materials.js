@@ -4,7 +4,7 @@ import db from '../db.js';
 
 const router = express.Router();
 
-// Beispiel: öffentliche Materials-Route
+//öffentliche Materialroute
 router.get('/', async (req, res, next) => {
   try {
     const [rows] = await db.query(`

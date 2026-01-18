@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ ok:false, message:'Bad payload' });
 
-  // Nutzer laden (GENAU deine Spaltennamen!)
+  // Nutzer laden
   const [rows] = await db.query(
     'SELECT id, email, password_hash FROM users WHERE email = ? LIMIT 1',
     [email]
@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
   const ok = await bcrypt.compare(password, user.password_hash);
   if (!ok) return res.status(401).json({ ok:false, message:'Unauthorized' });
 
-  // JWT erstellen (ein einziges JWT_SECRET nötig)
+  // JWT erstellen 
   const token = jwt.sign(
     { uid: user.id, email: user.email },
     process.env.JWT_SECRET,

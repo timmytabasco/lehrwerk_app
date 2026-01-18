@@ -35,7 +35,7 @@ const app = express();
 
 // CORS-Whitelist (mehrere Origins per Komma getrennt)
 // Beispiel .env: CORS_ORIGIN=http://localhost:5173,http://178.254.25.12,http://178.254.25.12:5173
-const ALLOWED = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://178.254.25.12,http://178.254.25.12:5173')
+const ALLOWED = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:5174,http://178.254.25.12,http://178.254.25.12:80,http://178.254.25.12:3000,http://178.254.25.12:5173')
   .split(',')
   .map(s => s.trim());
 
@@ -226,22 +226,18 @@ app.use('/api/cms/materials', requireAuth, cmsMaterialsRouter);
 app.use('/api/cms/contacts', requireAuth, cmsContacts);
 app.use('/api/cms/appointments', requireAuth, cmsAppointments);
 
-// Healthcheck (optional, hilfreich beim Debuggen von CORS/Cookies)
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, ts: new Date().toISOString() });
 });
 
 /* ------------------------------ Public-Fallback ----------------------------- */
 
-// Falls du statische Frontend-Builds ausliefern willst, hier das Verzeichnis anpassen.
-// Aktuell: Projektroot (eine Ebene über backend/)
-const publicDir = path.resolve(__dirname, '../');
-app.use(express.static(publicDir));
+app.use('/api', express.json());
 
 /* --------------------------------- Startup --------------------------------- */
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
+const PORT = process.env.PORT || 3000;  
+const server = app.listen(PORT, '0.0.0.0', () => {  
   console.log(`✅ API läuft auf http://0.0.0.0:${PORT}`);
 });
 
@@ -251,3 +247,24 @@ app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(500).json({ ok: false, message: 'Server error' });
 });
+
+/* ---------------------- Keep Alive & Graceful Shutdown --------------------- */
+
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    console.log('HTTP server closed');
+  });
+});
+
+// Keep the process alive
+process.stdin.resume();
+
+// Log alle 30 Minuten, dass der Server läuft 
+setInterval(() => {
+  console.log(`✅ Server läuft seit ${process.uptime()} Sekunden`);
+}, 30 * 60 * 1000);
+
+// Export für Tests
+export default app;

@@ -3,7 +3,7 @@ function loadFAQContent() {
   fetch('/data/faq.json')
     .then(res => res.json())
     .then(data => {
-      // Generiere HTML für alle FAQs mit Button für die Frage
+      
       const html = data.map((item, i) => `
         <div class="mb-4 bg-white rounded-xl shadow">
           <button
